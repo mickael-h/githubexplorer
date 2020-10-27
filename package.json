@@ -10,6 +10,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "query-string": "^6.13.6",
     "react": "16.13.1",
     "react-native": "0.63.3",
     "react-native-elements": "^3.0.0-alpha.1",
@@ -17,8 +18,9 @@
     "react-native-vector-icons": "^7.1.0",
     "react-redux": "^7.2.1",
     "redux": "^4.0.5",
-    "use-debounce": "^5.0.1",
-    "use-http": "^1.0.15"
+    "redux-logger": "^3.0.6",
+    "redux-thunk": "^2.3.0",
+    "use-debounce": "^5.0.1"
   },
   "devDependencies": {
     "detox": "^17.10.3",
