@@ -14,8 +14,10 @@ import {
   getBookmarkedURLs,
   getBookmarkedRepositories,
   getLoadedRepositories,
-  isFetching,
-  hasError,
+  isFetchingSearch,
+  isFetchingBookmarks,
+  hasBookmarksError,
+  hasSearchError,
   getPage,
   getQuery,
 } from '../../selectors';
@@ -55,8 +57,8 @@ MainScreen.options = {
 
 export const SearchView = ({ toggleFilter }) => {
   const loadedRepos = useSelector(getLoadedRepositories);
-  const loading = useSelector(isFetching);
-  const error = useSelector(hasError);
+  const loading = useSelector(isFetchingSearch);
+  const error = useSelector(hasSearchError);
   const showLoading = loading && loadedRepos.length == 0;
   const showError = error && !loading && loadedRepos.length == 0;
   return (
@@ -77,9 +79,19 @@ export const SearchView = ({ toggleFilter }) => {
 };
 
 export const BookmarksView = ({ toggleFilter }) => {
+  const loading = useSelector(isFetchingBookmarks);
+  const error = useSelector(hasBookmarksError);
   return (
     <View style={style.mainView}>
       <BookmarkList />
+      {loading
+        ? <ActivityIndicator animating size='large' color='blue' />
+        : null
+      }
+      {error // TODO: a better error feedback
+        ? <Icon name='error' size={30} color='red' />
+        : null
+      }
       <FloatingButton name={'search'} onPress={toggleFilter} />
     </View>
   );

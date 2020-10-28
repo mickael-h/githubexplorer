@@ -4,11 +4,17 @@ export const getPage = state =>
 export const getQuery = state =>
   state.repositoryReducer.query;
 
-export const isFetching = state =>
+export const isFetchingSearch = state =>
   state.repositoryReducer.fetching;
 
-export const hasError = state =>
+export const hasSearchError = state =>
   state.repositoryReducer.error != null;
+
+export const isFetchingBookmarks = state =>
+  state.repositoryReducer.fetchingBookmarks;
+
+export const hasBookmarksError = state =>
+  state.repositoryReducer.bookmarkError != null;
 
 export const getLoadedRepositories = state =>
   state.repositoryReducer.loadedRepositories;

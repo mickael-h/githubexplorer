@@ -94,7 +94,7 @@ const areRepoListsEqual = (list1, list2) =>
 
 const getReposLoaded = ({ bookmarks, bookmarkedRepositories, loadedRepositories }) => {
   const flatLoaded = [].concat.apply([], loadedRepositories);
-  const isInBookmarks = repo => bookmarks.includes(repo);
+  const isInBookmarks = repo => bookmarks.includes(repo.url);
   const filteredLoaded = flatLoaded.filter(isInBookmarks);
   const filteredBookmarked = bookmarkedRepositories.filter(isInBookmarks);
   return getUniqueRepoList(filteredBookmarked, filteredLoaded);
