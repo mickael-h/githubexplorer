@@ -13,6 +13,18 @@ const style = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
   },
+  fillerCtn: {
+    flex: 1,
+    marginTop: 50,
+    width: '75%',
+    alignSelf: 'center',
+  },
+  fillerMessage: {
+    fontStyle: 'italic',
+    color: 'grey',
+    fontSize: 28,
+    textAlign: 'center',
+  },
   hiddenButton: {
     width: 0,
   },

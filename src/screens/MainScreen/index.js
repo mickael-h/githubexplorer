@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, Dimensions, FlatList, View } from 'react-native';
+import { ActivityIndicator, Dimensions, FlatList, Text, View } from 'react-native';
 import { Avatar, Icon, Input, ListItem } from 'react-native-elements';
 import { useNavigation } from 'react-native-navigation-hooks';
 import { useDebounce } from 'use-debounce/lib';
@@ -59,8 +59,10 @@ export const SearchView = ({ toggleFilter }) => {
   const loadedRepos = useSelector(getLoadedRepositories);
   const loading = useSelector(isFetchingSearch);
   const error = useSelector(hasSearchError);
-  const showLoading = loading && loadedRepos.length == 0;
-  const showError = error && !loading && loadedRepos.length == 0;
+  const hasRepos = loadedRepos.length > 0 && loadedRepos[0].length > 0;
+  const showRepos = hasRepos || loading || error;
+  const showLoading = loading && !hasRepos;
+  const showError = error && !loading && !hasRepos;
   return (
     <View style={style.mainView}>
       <SearchInput />
@@ -68,35 +70,51 @@ export const SearchView = ({ toggleFilter }) => {
         ? <ActivityIndicator animating size='large' color='blue' />
         : null
       }
-      {showError // TODO: a better error feedback
-        ? <Icon name='error' size={30} color='red' />
+      {showError
+        ? <FillerMessage error
+          value={'Your search returned an error.'} />
         : null
       }
-      <RepositoryList />
-      <FloatingButton name={'favorite'} onPress={toggleFilter} />
+      {showRepos
+        ? <RepositoryList />
+        : <FillerMessage value={'Your search did not yield any results.'} />
+      }
+      <FloatingButton name='favorite' onPress={toggleFilter} />
     </View>
   );
 };
 
-//TODO add a nice message when bookmarks are empty
 export const BookmarksView = ({ toggleFilter }) => {
-  const loading = useSelector(isFetchingBookmarks);
+  const showLoading = useSelector(isFetchingBookmarks);
   const error = useSelector(hasBookmarksError);
+  const bookmarkURLs = useSelector(getBookmarkedURLs);
+  const hasBookmarks = bookmarkURLs.length > 0 || showLoading || error;
+  const showError = error && !showLoading && !hasBookmarks;
   return (
     <View style={style.mainView}>
-      <BookmarkList />
-      {loading
+      {hasBookmarks
+        ? <BookmarkList />
+        : <FillerMessage value={'You don\'t have any bookmarks yet!'} />
+      }
+      {showLoading
         ? <ActivityIndicator animating size='large' color='blue' />
         : null
       }
-      {error // TODO: a better error feedback
-        ? <Icon name='error' size={30} color='red' />
+      {showError
+        ? <FillerMessage error
+          value={'There was an error when fetching your Bookmarks.'} />
         : null
       }
-      <FloatingButton name={'search'} onPress={toggleFilter} />
+      <FloatingButton name='search' onPress={toggleFilter} />
     </View>
   );
 };
+
+const FillerMessage = ({ value, error }) =>
+  <View style={style.fillerCtn}>
+    {error && <Icon name='error' size={30} color='red' />}
+    <Text style={style.fillerMessage}>{value}</Text>
+  </View>;
 
 export const SearchInput = () => {
   const query = useSelector(getQuery);

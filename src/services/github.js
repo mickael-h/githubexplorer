@@ -62,6 +62,7 @@ const fetchJson = async url => {
 
 const convertRepoJsonToModel = ({
   url,
+  html_url,
   language,
   full_name,
   description,
@@ -69,6 +70,7 @@ const convertRepoJsonToModel = ({
   owner
 }) => ({
   url,
+  htmlUrl: html_url,
   language,
   name: full_name,
   // Some descriptions can be ridiculously long...
