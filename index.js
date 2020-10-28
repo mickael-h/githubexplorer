@@ -6,13 +6,21 @@ import RepositoryScreen from './src/screens/RepositoryScreen';
 
 Navigation.registerComponent(
   'MainScreen',
-  () => props => <ScreenWrapper><MainScreen {...props} /></ScreenWrapper>,
+  () =>
+    props =>
+      <ScreenWrapper componentId={props.componentId}>
+        <MainScreen {...props} />
+      </ScreenWrapper>,
   () => MainScreen
 );
 
 Navigation.registerComponent(
   'RepositoryScreen',
-  () => props => <ScreenWrapper><RepositoryScreen {...props} /></ScreenWrapper>,
+  () =>
+    props =>
+      <ScreenWrapper componentId={props.componentId}>
+        <RepositoryScreen {...props} />
+      </ScreenWrapper>,
   () => RepositoryScreen
 );
 

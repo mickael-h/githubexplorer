@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, FlatList, View } from 'react-native';
+import { ActivityIndicator, Dimensions, FlatList, View } from 'react-native';
 import { Avatar, Icon, Input, ListItem } from 'react-native-elements';
-import { Navigation } from 'react-native-navigation';
+import { useNavigation } from 'react-native-navigation-hooks';
+import { useDebounce } from 'use-debounce/lib';
+import style from './style';
+import FloatingButton from '../../components/FloatingButton';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   bookmarkRepo,
@@ -21,10 +24,8 @@ import {
   getPage,
   getQuery,
 } from '../../selectors';
-import { useDebounce } from 'use-debounce/lib';
-import style from './style';
-import { LANGUAGE_COLORS, STAR_COLOR } from '../../services/github';
-import FloatingButton from '../../components/FloatingButton';
+import StarCounter from '../../components/StarCounter';
+import LanguageLabel from '../../components/LanguageLabel';
 
 const MainScreen = () => {
   const dispatch = useDispatch();
@@ -47,10 +48,9 @@ MainScreen.options = {
   topBar: {
     title: {
       text: 'Repositories',
-      color: 'white',
     },
     background: {
-      color: 'blue',
+      color: '#BBBBFF',
     },
   },
 };
@@ -78,6 +78,7 @@ export const SearchView = ({ toggleFilter }) => {
   );
 };
 
+//TODO add a nice message when bookmarks are empty
 export const BookmarksView = ({ toggleFilter }) => {
   const loading = useSelector(isFetchingBookmarks);
   const error = useSelector(hasBookmarksError);
@@ -98,15 +99,14 @@ export const BookmarksView = ({ toggleFilter }) => {
 };
 
 export const SearchInput = () => {
-  const page = useSelector(getPage);
   const query = useSelector(getQuery);
   const [searchQuery, setSearchQuery] = useState(query);
   const [debouncedQuery] = useDebounce(searchQuery, 1000);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchPageIfNeeded(debouncedQuery, page));
-  }, [debouncedQuery, page]);
+    dispatch(fetchPageIfNeeded(debouncedQuery, 1));
+  }, [debouncedQuery]);
 
   return (
     <Input
@@ -123,13 +123,15 @@ export const SearchInput = () => {
   );
 };
 
-// TODO: implement pull to refresh
+// TODO: maybe implement pull to refresh
 export const BookmarkList = () => {
-  const bookmarks = useSelector(getBookmarkedRepositories);
-  const dispatch = useDispatch();
+  const bookmarkRepos = useSelector(getBookmarkedRepositories);
+  const bookmarkURLs = useSelector(getBookmarkedURLs);
+  const filteredBookmarks =
+    bookmarkRepos.filter(repo => bookmarkURLs.includes(repo.url));
   return (
     <FlatList
-      data={bookmarks}
+      data={filteredBookmarks}
       keyExtractor={repo => repo.url}
       renderItem={({ item }) =>
         <RepositoryItem item={item} />
@@ -139,13 +141,32 @@ export const BookmarkList = () => {
   );
 };
 
-//TODO: implement pull to refresh
+//TODO: maybe implement pull to refresh
 export const RepositoryList = () => {
+  const page = useSelector(getPage);
+  const query = useSelector(getQuery);
+  const loading = useSelector(isFetchingSearch);
   const loadedRepos = useSelector(getLoadedRepositories);
   const flattenedList = [].concat.apply([], loadedRepos);
+  const dispatch = useDispatch();
+
+  const checkDistanceToBottom = evt => {
+    if (loading) {
+      return;
+    }
+    const THRESHOLD = 2000;
+    const { contentOffset, contentSize } = evt.nativeEvent;
+    const distanceToBottom =
+      contentSize.height - contentOffset.y - Dimensions.get('window').height;
+    if (distanceToBottom < THRESHOLD) {
+      dispatch(fetchPageIfNeeded(query, page + 1));
+    }
+  };
+
   return (
     <FlatList
       data={flattenedList}
+      onScroll={checkDistanceToBottom}
       keyExtractor={repo => repo.url}
       renderItem={({ item }) =>
         <RepositoryItem item={item} />
@@ -156,6 +177,8 @@ export const RepositoryList = () => {
 };
 
 export const RepositoryItem = ({ item }) => {
+  const { push } = useNavigation();
+  const dispatch = useDispatch();
   const {
     url,
     name,
@@ -165,26 +188,29 @@ export const RepositoryItem = ({ item }) => {
     avatarUrl,
   } = item;
 
-  const starCount = stars < 1000
-    ? `${stars}`
-    : `${Math.floor(stars / 1000)}k`;
+  const previewRepo = () => {
+    console.log('SETTING ITEM', item);
+    dispatch(setDisplayedRepo(item));
+    push('RepositoryScreen', null,
+      {
+        topBar: {
+          title: {
+            text: name,
+          },
+        },
+      });
+  };
 
   return (
-    <ListItem bottomDivider>
+    <ListItem bottomDivider onPress={previewRepo}>
       <Avatar source={{ uri: avatarUrl }} />
       <ListItem.Content>
         <ListItem.Title>{name}</ListItem.Title>
         <ListItem.Subtitle>{description}</ListItem.Subtitle>
         <View style={style.repoItemInfoContainer}>
-          <View style={style.repoItemInfoView}>
-            <Icon name='star' size={18} color={STAR_COLOR} />
-            <ListItem.Subtitle> {starCount}</ListItem.Subtitle>
-          </View>
+          <StarCounter stars={stars} />
           {Boolean(language)
-            ? <View style={style.repoItemInfoView}>
-              <Icon name='circle' size={18} color={LANGUAGE_COLORS[language]} />
-              <ListItem.Subtitle> {language}</ListItem.Subtitle>
-            </View>
+            ? <LanguageLabel language={language} />
             : null
           }
         </View>
@@ -195,9 +221,9 @@ export const RepositoryItem = ({ item }) => {
 };
 
 export const BookmarkButton = ({ url }) => {
-  const bookmarks = useSelector(getBookmarkedURLs);
+  const bookmarkedURLs = useSelector(getBookmarkedURLs);
   const dispatch = useDispatch();
-  const isBookmarked = bookmarks.includes(url);
+  const isBookmarked = bookmarkedURLs.includes(url);
 
   const toggleBookmark = () => {
     if (isBookmarked) {

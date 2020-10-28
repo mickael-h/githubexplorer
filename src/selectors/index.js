@@ -20,7 +20,7 @@ export const getLoadedRepositories = state =>
   state.repositoryReducer.loadedRepositories;
 
 export const getBookmarkedURLs = state =>
-  state.repositoryReducer.bookmarks;
+  state.repositoryReducer.bookmarkedURLs;
 
 export const getBookmarkedRepositories = state =>
   state.repositoryReducer.bookmarkedRepositories;

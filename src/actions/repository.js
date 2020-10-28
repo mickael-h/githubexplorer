@@ -1,4 +1,4 @@
-import { fetchMostStarred, fetchRepos } from '../services/github';
+import { fetchMostStarred, fetchRepos, fetchReadme } from '../services/github';
 import {
   BOOKMARK_REPO,
   REMOVE_BOOKMARK,
@@ -8,6 +8,7 @@ import {
   UPDATE_BOOKMARKS,
   REQUEST_BOOKMARKS,
   RECEIVE_BOOKMARKS,
+  RECEIVE_README,
 } from './types';
 
 export const bookmarkRepo = url => ({
@@ -20,15 +21,41 @@ export const removeBookmark = url => ({
   url,
 });
 
-export const setDisplayedRepo = repo => ({
+export const setDisplayedRepo = repo =>
+  (dispatch, getState) => {
+    const state = getState().repositoryReducer;
+    if (state.displayedRepository.url == repo.url) {
+      return null;
+    }
+    dispatch(displayRepoBasicInfo(repo));
+    return dispatch(fetchReadmeContent(repo));
+  };
+
+const fetchReadmeContent = ({ url }) =>
+  async dispatch => {
+    try {
+      const res = await fetchReadme(url);
+      return dispatch(receiveReadme(url, res));
+    } catch (error) {
+      return dispatch(receiveReadme(url, null, error));
+    }
+  };
+
+const displayRepoBasicInfo = repo => ({
   type: SELECT_REPO,
   repo,
+});
+
+const receiveReadme = (repoUrl, readme, readmeError = null) => ({
+  type: RECEIVE_README,
+  repoUrl,
+  readme,
+  readmeError,
 });
 
 export const fetchPageIfNeeded = (query, page) =>
   (dispatch, getState) => {
     const state = getState().repositoryReducer;
-    console.log('current state page', state);
     const qPage = page || 1;
     return shouldFetchPage(state, query, qPage)
       ? dispatch(fetchPage(query, qPage, shouldWipeResults(state, query)))
@@ -41,8 +68,8 @@ const shouldFetchPage = (state, newQuery, newPage) =>
 const shouldWipeResults = (state, newQuery) =>
   state.query != newQuery;
 
-const fetchPage = (query, page, wipeResults) => {
-  return async dispatch => {
+const fetchPage = (query, page, wipeResults) =>
+  async dispatch => {
     dispatch(requestPage(query, page, wipeResults));
     try {
       const res = await fetchMostStarred(query, page);
@@ -51,7 +78,6 @@ const fetchPage = (query, page, wipeResults) => {
       return dispatch(receivePage(query, page, null, error));
     }
   };
-};
 
 const requestPage = (query, page, wipeResults) => ({
   type: REQUEST_PAGE,
@@ -71,7 +97,6 @@ const receivePage = (query, page, repos, error = null) => ({
 export const fetchBookmarksIfNeeded = () =>
   (dispatch, getState) => {
     const state = getState().repositoryReducer;
-    console.log('current state bookmarks', state);
     const reposAlreadyLoaded = getReposLoaded(state);
     const repoURLsToLoad = getRepoURLsToLoad(state, reposAlreadyLoaded);
     const loadedListNeedsUpdate =
@@ -92,11 +117,11 @@ const areRepoListsEqual = (list1, list2) =>
   list1.length == list2.length &&
   list1.some(repo1 => !list2.some(repo2 => repo1.url == repo2.url));
 
-const getReposLoaded = ({ bookmarks, bookmarkedRepositories, loadedRepositories }) => {
+const getReposLoaded = ({ bookmarkedURLs, bookmarkedRepositories, loadedRepositories }) => {
   const flatLoaded = [].concat.apply([], loadedRepositories);
-  const isInBookmarks = repo => bookmarks.includes(repo.url);
-  const filteredLoaded = flatLoaded.filter(isInBookmarks);
-  const filteredBookmarked = bookmarkedRepositories.filter(isInBookmarks);
+  const isInBookmarkURLsList = repo => bookmarkedURLs.includes(repo.url);
+  const filteredLoaded = flatLoaded.filter(isInBookmarkURLsList);
+  const filteredBookmarked = bookmarkedRepositories.filter(isInBookmarkURLsList);
   return getUniqueRepoList(filteredBookmarked, filteredLoaded);
 };
 
@@ -108,8 +133,8 @@ const getUniqueRepoList = (repoList1, repoList2) => {
   return Object.values(mergedObj);
 };
 
-const getRepoURLsToLoad = ({ bookmarks }, reposLoaded) =>
-  bookmarks.filter(url => !reposLoaded.some(repo => repo.url == url));
+const getRepoURLsToLoad = ({ bookmarkedURLs }, reposLoaded) =>
+  bookmarkedURLs.filter(url => !reposLoaded.some(repo => repo.url == url));
 
 
 const updateBookmarks = bookmarkedRepositories => ({

@@ -7,15 +7,17 @@ import {
   UPDATE_BOOKMARKS,
   REQUEST_BOOKMARKS,
   RECEIVE_BOOKMARKS,
+  RECEIVE_README,
 } from '../actions/types';
 
 // page is initialized to 0 to show
-// that no page has been loaded yet.
+// that no page has been loaded yet,
+// which triggers the first request on mount.
 const initialState = {
   displayedRepository: {},
   loadedRepositories: [],
   bookmarkedRepositories: [],
-  bookmarks: [],
+  bookmarkedURLs: [],
   query: '',
   page: 0,
   error: null,
@@ -42,6 +44,8 @@ const repositoryReducer = (state = initialState, action) => {
       return requestBookmarks(state);
     case RECEIVE_BOOKMARKS:
       return receiveBookmarks(state, action);
+    case RECEIVE_README:
+      return receiveReadme(state, action);
     default:
       return state;
   }
@@ -49,17 +53,20 @@ const repositoryReducer = (state = initialState, action) => {
 
 const addBookmark = (state, { url }) => ({
   ...state,
-  bookmarks: state.bookmarks.concat(url),
+  bookmarkedURLs: state.bookmarkedURLs.concat(url),
 });
 
 const removeBookmark = (state, { url }) => ({
   ...state,
-  bookmarks: state.bookmarks.filter(bUrl => bUrl !== url),
+  bookmarkedURLs: state.bookmarkedURLs.filter(bUrl => bUrl !== url),
 });
 
 const selectRepo = (state, { repo }) => ({
   ...state,
-  displayedRepository: repo,
+  displayedRepository: {
+    ...repo,
+    fetchingReadme: true,
+  },
 });
 
 const requestPage = (state, { query, page, wipeResults }) => {
@@ -110,7 +117,7 @@ const requestBookmarks = state => ({
 });
 
 const receiveBookmarks = (state, { error, repos }) => {
-  const loadedBookmarks = repos.filter(repo => state.bookmarks.includes(repo.url));
+  const loadedBookmarks = repos.filter(repo => state.bookmarkedURLs.includes(repo.url));
   if (loadedBookmarks.length == 0) {
     // We filtered the repositories that have been unbookmarked
     // by the time we received the response to the request.
@@ -139,6 +146,23 @@ const receiveBookmarks = (state, { error, repos }) => {
     bookmarkError: error,
     fetchingBookmarks: false,
     bookmarkedRepositories,
+  };
+};
+
+const receiveReadme = (state, { readmeError, readme, repoUrl }) => {
+  const displayedRepo = state.displayedRepository;
+  if (!displayedRepo.fetchingReadme ||
+    displayedRepo.url != repoUrl) {
+    return state;
+  }
+  return {
+    ...state,
+    displayedRepository: {
+      ...displayedRepo,
+      fetchingReadme: false,
+      readme,
+      readmeError,
+    },
   };
 };
 

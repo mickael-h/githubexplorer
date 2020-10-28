@@ -1,7 +1,10 @@
 import queryString from 'query-string';
+import { decode as decodeB64 } from 'base-64';
+import { decode as decodeUTF8 } from 'utf8';
 
 const API_URL = 'https://api.github.com';
 const SEARCH_ROUTE = '/search/repositories';
+const README_ROUTE = '/contents/README.md';
 
 const getReposByStarsRoute = (q, page) =>
   `${API_URL}${SEARCH_ROUTE}?${queryString.stringify({
@@ -29,6 +32,22 @@ export const fetchMostStarred = async (query, page) => {
   const URL = getReposByStarsRoute(query, page);
   const json = await fetchJson(URL);
   return json.items.map(convertRepoJsonToModel);
+};
+
+export const fetchReadme = async repoUrl => {
+  const json = await fetchJson(repoUrl + README_ROUTE);
+  if (!('content' in json)) {
+    console.error(JSON.stringify(json.message));
+    return Promise.reject(json.message);
+  }
+
+  let readme = json.content;
+  if (json.encoding == 'base64') {
+    const bytes = decodeB64(readme);
+    readme = decodeUTF8(bytes);
+  }
+
+  return readme;
 };
 
 const fetchJson = async url => {
