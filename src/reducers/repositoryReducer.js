@@ -13,7 +13,7 @@ import {
 // page is initialized to 0 to show
 // that no page has been loaded yet,
 // which triggers the first request on mount.
-const initialState = {
+export const initialState = {
   displayedRepository: {},
   loadedRepositories: [],
   bookmarkedRepositories: [],

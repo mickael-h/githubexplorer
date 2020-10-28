@@ -207,7 +207,6 @@ export const RepositoryItem = ({ item }) => {
   } = item;
 
   const previewRepo = () => {
-    console.log('SETTING ITEM', item);
     dispatch(setDisplayedRepo(item));
     push('RepositoryScreen', null,
       {

@@ -3,12 +3,12 @@ import {
   BOOKMARK_REPO,
   REMOVE_BOOKMARK,
   SELECT_REPO,
+  RECEIVE_README,
   REQUEST_PAGE,
   RECEIVE_PAGE,
   UPDATE_BOOKMARKS,
   REQUEST_BOOKMARKS,
   RECEIVE_BOOKMARKS,
-  RECEIVE_README,
 } from './types';
 
 export const bookmarkRepo = url => ({

@@ -5,7 +5,7 @@ import style from './style';
 const FloatingButton = props => {
   return (
     <Icon
-      testID='FloatingAddButton'
+      testID='FloatingButton'
       reverse
       name={props.name}
       color='blue'
