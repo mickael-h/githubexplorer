@@ -6,28 +6,55 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   bookmarkRepo,
   setDisplayedRepo,
+  fetchBookmarksIfNeeded,
   fetchPageIfNeeded,
+  removeBookmark,
 } from '../../actions/repository';
 import {
-  getBookmarks,
+  getBookmarkedURLs,
+  getBookmarkedRepositories,
   getLoadedRepositories,
   isFetching,
   hasError,
-  getPage
+  getPage,
+  getQuery,
 } from '../../selectors';
 import { useDebounce } from 'use-debounce/lib';
 import style from './style';
+import { LANGUAGE_COLORS, STAR_COLOR } from '../../services/github';
+import FloatingButton from '../../components/FloatingButton';
 
 const MainScreen = props => {
-  const loading = useSelector(isFetching);
-  const error = useSelector(hasError);
+  const dispatch = useDispatch();
+  const [filterBookmarks, setFilterBookmarks] = useState(false);
 
-  return (
-    <View style={style.mainView}>
-      <SearchInput />
-      <RepositoryList />
-    </View>
-  );
+  const toggleFilter = () => {
+    const willFilter = !filterBookmarks;
+    setFilterBookmarks(willFilter);
+    if (willFilter) {
+      dispatch(fetchBookmarksIfNeeded());
+    }
+  };
+
+  if (filterBookmarks) {
+    return (
+      <BookmarksView>
+        <FloatingButton
+          name={'search'}
+          onPress={toggleFilter}
+        />
+      </BookmarksView>
+    );
+  } else {
+    return (
+      <SearchView>
+        <FloatingButton
+          name={'favorite'}
+          onPress={toggleFilter}
+        />
+      </SearchView>
+    );
+  }
 };
 
 MainScreen.options = {
@@ -42,9 +69,42 @@ MainScreen.options = {
   },
 };
 
+export const SearchView = ({ children }) => {
+  const loadedRepos = useSelector(getLoadedRepositories);
+  const loading = useSelector(isFetching);
+  const error = useSelector(hasError);
+  const showLoading = loading && loadedRepos.length == 0;
+  const showError = error && !loading && loadedRepos.length == 0;
+  return (
+    <View style={style.mainView}>
+      <SearchInput />
+      {showLoading
+        ? <ActivityIndicator animating size='large' color='blue' />
+        : null
+      }
+      {showError // TODO: a better error feedback
+        ? <Icon name='error' size={30} color='red' />
+        : null
+      }
+      <RepositoryList />
+      {children}
+    </View>
+  );
+};
+
+export const BookmarksView = ({ children }) => {
+  return (
+    <View style={style.mainView}>
+      <BookmarkList />
+      {children}
+    </View>
+  );
+};
+
 export const SearchInput = () => {
   const page = useSelector(getPage);
-  const [searchQuery, setSearchQuery] = useState('');
+  const query = useSelector(getQuery);
+  const [searchQuery, setSearchQuery] = useState(query);
   const [debouncedQuery] = useDebounce(searchQuery, 1000);
   const dispatch = useDispatch();
 
@@ -58,6 +118,8 @@ export const SearchInput = () => {
       value={searchQuery}
       onChangeText={txt => setSearchQuery(txt)}
       rightIcon={<Icon
+        disabled={!Boolean(searchQuery)}
+        disabledStyle={style.hiddenButton}
         name='cancel'
         onPress={() => setSearchQuery('')}
       />}
@@ -65,13 +127,14 @@ export const SearchInput = () => {
   );
 };
 
-export const RepositoryList = () => {
-  const loadedRepos = useSelector(getLoadedRepositories);
-  const flattenedList = [].concat.apply([], loadedRepos);
+// TODO: implement pull to refresh
+export const BookmarkList = () => {
+  const bookmarks = useSelector(getBookmarkedRepositories);
+  const dispatch = useDispatch();
   return (
     <FlatList
-      data={flattenedList}
-      keyExtractor={repo => `${repo.id}`}
+      data={bookmarks}
+      keyExtractor={repo => repo.url}
       renderItem={({ item }) =>
         <RepositoryItem item={item} />
       }
@@ -80,25 +143,82 @@ export const RepositoryList = () => {
   );
 };
 
-export const RepositoryItem = props => {
-  const bookmarks = useSelector(getBookmarks);
-  const dispatch = useDispatch();
+//TODO: implement pull to refresh
+export const RepositoryList = () => {
+  const loadedRepos = useSelector(getLoadedRepositories);
+  const flattenedList = [].concat.apply([], loadedRepos);
+  return (
+    <FlatList
+      data={flattenedList}
+      keyExtractor={repo => repo.url}
+      renderItem={({ item }) =>
+        <RepositoryItem item={item} />
+      }
+    >
+    </FlatList>
+  );
+};
+
+export const RepositoryItem = ({ item }) => {
   const {
+    url,
     name,
     description,
     stars,
-    avatar_url,
-  } = props.item;
+    language,
+    avatarUrl,
+  } = item;
+
+  const starCount = stars < 1000
+    ? `${stars}`
+    : `${Math.floor(stars / 1000)}k`;
+
   return (
     <ListItem bottomDivider>
-      <Avatar source={{ uri: avatar_url }} />
+      <Avatar source={{ uri: avatarUrl }} />
       <ListItem.Content>
         <ListItem.Title>{name}</ListItem.Title>
         <ListItem.Subtitle>{description}</ListItem.Subtitle>
+        <View style={style.repoItemInfoContainer}>
+          <View style={style.repoItemInfoView}>
+            <Icon name='star' size={18} color={STAR_COLOR} />
+            <ListItem.Subtitle> {starCount}</ListItem.Subtitle>
+          </View>
+          {Boolean(language)
+            ? <View style={style.repoItemInfoView}>
+              <Icon name='circle' size={18} color={LANGUAGE_COLORS[language]} />
+              <ListItem.Subtitle> {language}</ListItem.Subtitle>
+            </View>
+            : null
+          }
+        </View>
       </ListItem.Content>
+      <BookmarkButton url={url} />
     </ListItem>
   );
 };
 
+export const BookmarkButton = ({ url }) => {
+  const bookmarks = useSelector(getBookmarkedURLs);
+  const dispatch = useDispatch();
+  const isBookmarked = bookmarks.includes(url);
+
+  const toggleBookmark = () => {
+    if (isBookmarked) {
+      dispatch(removeBookmark(url));
+    } else {
+      dispatch(bookmarkRepo(url));
+    }
+  };
+
+  return (
+    <Icon
+      name={isBookmarked ? 'favorite' : 'favorite-outline'}
+      color='red'
+      size={30}
+      onPress={toggleBookmark}
+    />
+  );
+};
 
 export default MainScreen;

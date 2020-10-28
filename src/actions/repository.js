@@ -1,20 +1,23 @@
-import { fetchMostStarred } from '../services/github';
+import { fetchMostStarred, fetchRepos } from '../services/github';
 import {
   BOOKMARK_REPO,
   REMOVE_BOOKMARK,
   SELECT_REPO,
   REQUEST_PAGE,
   RECEIVE_PAGE,
+  UPDATE_BOOKMARKS,
+  REQUEST_BOOKMARKS,
+  RECEIVE_BOOKMARKS,
 } from './types';
 
-export const bookmarkRepo = id => ({
+export const bookmarkRepo = url => ({
   type: BOOKMARK_REPO,
-  id,
+  url,
 });
 
-export const removeBookmark = id => ({
+export const removeBookmark = url => ({
   type: REMOVE_BOOKMARK,
-  id,
+  url,
 });
 
 export const setDisplayedRepo = repo => ({
@@ -24,9 +27,11 @@ export const setDisplayedRepo = repo => ({
 
 export const fetchPageIfNeeded = (query, page) =>
   (dispatch, getState) => {
-    const state = getState();
-    return shouldFetchPage(state, query, page)
-      ? dispatch(fetchPage(query, page, shouldWipeResults(state, query)))
+    const state = getState().repositoryReducer;
+    console.log('current state page', state);
+    const qPage = page || 1;
+    return shouldFetchPage(state, query, qPage)
+      ? dispatch(fetchPage(query, qPage, shouldWipeResults(state, query)))
       : null;
   };
 
@@ -61,4 +66,75 @@ const receivePage = (query, page, repos, error = null) => ({
   page,
   error,
   repos,
+});
+
+export const fetchBookmarksIfNeeded = () =>
+  (dispatch, getState) => {
+    const state = getState().repositoryReducer;
+    console.log('current state bookmarks', state);
+    const reposAlreadyLoaded = getReposLoaded(state);
+    const repoURLsToLoad = getRepoURLsToLoad(state, reposAlreadyLoaded);
+    const loadedListNeedsUpdate =
+      !areRepoListsEqual(state.bookmarkedRepositories, reposAlreadyLoaded);
+
+    if (loadedListNeedsUpdate) {
+      dispatch(updateBookmarks(reposAlreadyLoaded));
+    }
+
+    if (repoURLsToLoad.length > 0) {
+      return dispatch(fetchBookmarks(repoURLsToLoad));
+    } else {
+      return null;
+    }
+  };
+
+const areRepoListsEqual = (list1, list2) =>
+  list1.length == list2.length &&
+  list1.some(repo1 => !list2.some(repo2 => repo1.url == repo2.url));
+
+const getReposLoaded = ({ bookmarks, bookmarkedRepositories, loadedRepositories }) => {
+  const flatLoaded = [].concat.apply([], loadedRepositories);
+  const isInBookmarks = repo => bookmarks.includes(repo);
+  const filteredLoaded = flatLoaded.filter(isInBookmarks);
+  const filteredBookmarked = bookmarkedRepositories.filter(isInBookmarks);
+  return getUniqueRepoList(filteredBookmarked, filteredLoaded);
+};
+
+const getUniqueRepoList = (repoList1, repoList2) => {
+  const mergedObj = {};
+  const tranferRepo = repo => mergedObj[repo.url] = repo;
+  repoList1.forEach(tranferRepo);
+  repoList2.forEach(tranferRepo);
+  return Object.values(mergedObj);
+};
+
+const getRepoURLsToLoad = ({ bookmarks }, reposLoaded) =>
+  bookmarks.filter(url => !reposLoaded.some(repo => repo.url == url));
+
+
+const updateBookmarks = bookmarkedRepositories => ({
+  type: UPDATE_BOOKMARKS,
+  bookmarkedRepositories,
+});
+
+const fetchBookmarks = repoURLsToLoad => {
+  return async dispatch => {
+    dispatch(requestBookmarks());
+    try {
+      const res = await fetchRepos(repoURLsToLoad);
+      return dispatch(receiveBookmarks(res));
+    } catch (error) {
+      return dispatch(receiveBookmarks(null, error));
+    }
+  };
+};
+
+const requestBookmarks = () => ({
+  type: REQUEST_BOOKMARKS,
+});
+
+const receiveBookmarks = (repos, error = null) => ({
+  type: RECEIVE_BOOKMARKS,
+  repos,
+  error,
 });

@@ -1,20 +1,23 @@
-export const getPage = store =>
-  store.repositoryReducer.page;
+export const getPage = state =>
+  state.repositoryReducer.page;
 
-export const getQuery = store =>
-  store.repositoryReducer.query;
+export const getQuery = state =>
+  state.repositoryReducer.query;
 
-export const isFetching = store =>
-  store.repositoryReducer.fetching;
+export const isFetching = state =>
+  state.repositoryReducer.fetching;
 
-export const hasError = store =>
-  store.repositoryReducer.error != null;
+export const hasError = state =>
+  state.repositoryReducer.error != null;
 
-export const getLoadedRepositories = store =>
-  store.repositoryReducer.loadedRepositories;
+export const getLoadedRepositories = state =>
+  state.repositoryReducer.loadedRepositories;
 
-export const getBookmarks = store =>
-  store.repositoryReducer.bookmarks;
+export const getBookmarkedURLs = state =>
+  state.repositoryReducer.bookmarks;
 
-export const getDisplayedRepository = store =>
-  store.repositoryReducer.displayedRepository;
+export const getBookmarkedRepositories = state =>
+  state.repositoryReducer.bookmarkedRepositories;
+
+export const getDisplayedRepository = state =>
+  state.repositoryReducer.displayedRepository;
