@@ -24,7 +24,7 @@ import style from './style';
 import { LANGUAGE_COLORS, STAR_COLOR } from '../../services/github';
 import FloatingButton from '../../components/FloatingButton';
 
-const MainScreen = props => {
+const MainScreen = () => {
   const dispatch = useDispatch();
   const [filterBookmarks, setFilterBookmarks] = useState(false);
 
@@ -36,25 +36,9 @@ const MainScreen = props => {
     }
   };
 
-  if (filterBookmarks) {
-    return (
-      <BookmarksView>
-        <FloatingButton
-          name={'search'}
-          onPress={toggleFilter}
-        />
-      </BookmarksView>
-    );
-  } else {
-    return (
-      <SearchView>
-        <FloatingButton
-          name={'favorite'}
-          onPress={toggleFilter}
-        />
-      </SearchView>
-    );
-  }
+  return filterBookmarks ?
+    <BookmarksView toggleFilter={toggleFilter} /> :
+    <SearchView toggleFilter={toggleFilter} />;
 };
 
 MainScreen.options = {
@@ -69,7 +53,7 @@ MainScreen.options = {
   },
 };
 
-export const SearchView = ({ children }) => {
+export const SearchView = ({ toggleFilter }) => {
   const loadedRepos = useSelector(getLoadedRepositories);
   const loading = useSelector(isFetching);
   const error = useSelector(hasError);
@@ -87,16 +71,16 @@ export const SearchView = ({ children }) => {
         : null
       }
       <RepositoryList />
-      {children}
+      <FloatingButton name={'favorite'} onPress={toggleFilter} />
     </View>
   );
 };
 
-export const BookmarksView = ({ children }) => {
+export const BookmarksView = ({ toggleFilter }) => {
   return (
     <View style={style.mainView}>
       <BookmarkList />
-      {children}
+      <FloatingButton name={'search'} onPress={toggleFilter} />
     </View>
   );
 };
