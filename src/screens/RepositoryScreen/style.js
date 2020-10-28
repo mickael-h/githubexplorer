@@ -4,7 +4,6 @@ const style = StyleSheet.create({
   mainView: {
     flex: 1,
     padding: 20,
-    marginBottom: 20,
   },
   title: {
     fontSize: 18,
