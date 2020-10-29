@@ -2,10 +2,12 @@ import React from 'react';
 import { render } from '@testing-library/react-native';
 import SearchView from '..';
 import fetchMock from 'fetch-mock-jest';
-import { configureStoreNoLogs } from '../../../../../store';
 import { Provider } from 'react-redux';
 import { NavigationProvider } from 'react-native-navigation-hooks/dist';
-import { RAW_PAGE_EXAMPLE, STATE_WITH_1_LOADED_REPO } from '../../../../../data_examples/data_examples';
+import {
+  RAW_PAGE_EXAMPLE,
+  STATE_WITH_1_LOADED_REPO,
+} from '../../../../../data_examples/data_examples';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { initialState } from '../../../../../reducers/repositoryReducer';
