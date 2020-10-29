@@ -20,6 +20,7 @@ export const initialState = {
   bookmarkedURLs: [],
   query: '',
   page: 0,
+  hasReachedFinalPage: false,
   error: null,
   bookmarkError: null,
   fetching: false,
@@ -78,6 +79,7 @@ const requestPage = (state, { query, page, wipeResults }) => {
   };
   if (wipeResults) {
     newState.loadedRepositories = [];
+    newState.hasReachedFinalPage = false;
   }
   return newState;
 };
@@ -93,6 +95,15 @@ const receivePage = (state, { query, page, error, repos }) => {
       ...state,
       fetching: false,
       error,
+    };
+  }
+
+  if (repos.length == 0) {
+    return {
+      ...state,
+      fetching: false,
+      hasReachedFinalPage: true,
+      error: null,
     };
   }
 
@@ -151,8 +162,7 @@ const receiveBookmarks = (state, { error, repos }) => {
 
 const receiveReadme = (state, { readmeError, readme, repoUrl }) => {
   const displayedRepo = state.displayedRepository;
-  if (!displayedRepo.fetchingReadme ||
-    displayedRepo.url != repoUrl) {
+  if (!isDisplayedRepoWaitingForReadme(displayedRepo, repoUrl)) {
     return state;
   }
   return {
@@ -165,6 +175,9 @@ const receiveReadme = (state, { readmeError, readme, repoUrl }) => {
     },
   };
 };
+
+const isDisplayedRepoWaitingForReadme = (displayedRepo, receivedUrl) =>
+  displayedRepo.fetchingReadme && displayedRepo.url == receivedUrl;
 
 
 export default repositoryReducer;

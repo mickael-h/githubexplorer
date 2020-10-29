@@ -63,7 +63,8 @@ export const fetchPageIfNeeded = (query, page) =>
   };
 
 const shouldFetchPage = (state, newQuery, newPage) =>
-  state.query != newQuery || state.page != newPage;
+  shouldWipeResults(state, newQuery) ||
+  (!state.hasReachedFinalPage && newPage > state.page);
 
 const shouldWipeResults = (state, newQuery) =>
   state.query != newQuery;
