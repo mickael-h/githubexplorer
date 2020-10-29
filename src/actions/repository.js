@@ -116,7 +116,7 @@ export const fetchBookmarksIfNeeded = () =>
 
 const areRepoListsEqual = (list1, list2) =>
   list1.length == list2.length &&
-  list1.some(repo1 => !list2.some(repo2 => repo1.url == repo2.url));
+  list1.every(repo1 => list2.some(repo2 => repo1.url == repo2.url));
 
 const getReposLoaded = ({ bookmarkedURLs, bookmarkedRepositories, loadedRepositories }) => {
   const flatLoaded = [].concat.apply([], loadedRepositories);

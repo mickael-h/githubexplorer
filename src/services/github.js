@@ -2,22 +2,12 @@ import queryString from 'query-string';
 import { decode as decodeB64 } from 'base-64';
 import { decode as decodeUTF8 } from 'utf8';
 
-const API_URL = 'https://api.github.com';
-const SEARCH_ROUTE = '/search/repositories';
-const README_ROUTE = '/contents/README.md';
-
-const getReposByStarsRoute = (q, page) =>
-  `${API_URL}${SEARCH_ROUTE}?${queryString.stringify({
-    q,
-    sort: 'stars',
-    page,
-  })}`;
+export const API_URL = 'https://api.github.com';
+export const SEARCH_ROUTE = '/search/repositories';
+export const README_ROUTE = '/contents/README.md';
+export const DEFAULT_QUERY = 'stars:>=1000';
 
 export const fetchRepos = async urlList => {
-  if (!Boolean(urlList?.length)) {
-    return Promise.resolve([]);
-  }
-
   // Promise.allSettled would be better here but isn't available.
   return Promise.all(urlList.map(async url => {
     const json = await fetchJson(url);
@@ -27,17 +17,23 @@ export const fetchRepos = async urlList => {
 
 export const fetchMostStarred = async (query, page) => {
   if (!Boolean(query)) {
-    query = 'stars:>=1000';
+    query = DEFAULT_QUERY;
   }
   const URL = getReposByStarsRoute(query, page);
   const json = await fetchJson(URL);
   return json.items.map(convertRepoJsonToModel);
 };
 
+const getReposByStarsRoute = (q, page) =>
+  `${API_URL}${SEARCH_ROUTE}?${queryString.stringify({
+    q,
+    sort: 'stars',
+    page,
+  })}`;
+
 export const fetchReadme = async repoUrl => {
   const json = await fetchJson(repoUrl + README_ROUTE);
   if (!('content' in json)) {
-    console.error(JSON.stringify(json.message));
     return Promise.reject(json.message);
   }
 
@@ -54,7 +50,6 @@ const fetchJson = async url => {
   const res = await fetch(url);
   const json = await res.json();
   if ('errors' in json) {
-    console.error(JSON.stringify(json.errors));
     return Promise.reject(json.message);
   }
   return json;

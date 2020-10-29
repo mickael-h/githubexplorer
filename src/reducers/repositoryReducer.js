@@ -128,6 +128,14 @@ const requestBookmarks = state => ({
 });
 
 const receiveBookmarks = (state, { error, repos }) => {
+  if (Boolean(error)) {
+    return {
+      ...state,
+      fetchingBookmarks: false,
+      bookmarkError: error,
+    };
+  }
+
   const loadedBookmarks = repos.filter(repo => state.bookmarkedURLs.includes(repo.url));
   if (loadedBookmarks.length == 0) {
     // We filtered the repositories that have been unbookmarked
@@ -136,14 +144,6 @@ const receiveBookmarks = (state, { error, repos }) => {
     return {
       ...state,
       fetchingBookmarks: false,
-    };
-  }
-
-  if (Boolean(error)) {
-    return {
-      ...state,
-      fetchingBookmarks: false,
-      bookmarkError: error,
     };
   }
 

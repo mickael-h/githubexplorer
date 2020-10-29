@@ -14,4 +14,9 @@ const configureStore = () => createStore(
   applyMiddleware(thunkMiddleware, loggerMiddleware),
 );
 
+export const configureStoreNoLogs = () => createStore(
+  rootReducer,
+  applyMiddleware(thunkMiddleware),
+);
+
 export default configureStore;

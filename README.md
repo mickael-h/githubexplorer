@@ -1,9 +1,6 @@
 # Github Explorer
 There will go my report when I'm done
 
-## TODO
-- Add tests
-
 ## Features ideas
 - AsyncStorage to keep bookmarks
 - Localization
@@ -12,3 +9,8 @@ There will go my report when I'm done
 - A scrollToTop button
 - Login to Github -> star repos, check private repos, create issues, etc.
 - pullToRefresh on lists
+
+## Other things to do
+- Optimize rendering
+- Split the store's tests into several files
+- Figure out why the SearchView makes a weird "act" warning in Jest
