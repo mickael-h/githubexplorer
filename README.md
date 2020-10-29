@@ -1,6 +1,12 @@
 # Github Explorer
 There will go my report when I'm done
 
+## Unit / integration tests results
+
+![Test Results](https://i.imgur.com/cOqFIEc.png "All clear!")
+![Satisfaction](https://i.imgur.com/cLLOVbb.png "Feels good :)")
+
+
 ## Features ideas
 - AsyncStorage to keep bookmarks
 - Localization
