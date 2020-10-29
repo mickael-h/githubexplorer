@@ -23,6 +23,7 @@ const SearchInput = () => {
       value={searchQuery}
       onChangeText={txt => setSearchQuery(txt)}
       rightIcon={<Icon
+        testID='EraseSearchButton'
         disabled={!Boolean(searchQuery)}
         disabledStyle={style.hiddenButton}
         name='cancel'

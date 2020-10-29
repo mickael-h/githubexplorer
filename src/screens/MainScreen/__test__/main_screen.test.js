@@ -43,7 +43,7 @@ describe('MainScreen unit tests', () => {
     button = getByTestId('FloatingButton');
     expect(getIconProps(button).name).toEqual('favorite');
 
-    // Because of useDebounce in SearchInput
+    // Because of useDebounce in SearchInput. Mocking doesn't work here.
     setTimeout(() => {
       done();
     }, 1100);

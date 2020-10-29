@@ -3,7 +3,7 @@ import { Platform } from 'react-native';
 
 const share = repoHttp => {
   const title = 'Github Repository';
-  const message = 'Please have a look at this:';
+  const message = 'Please check this out:';
   const options = Platform.select({
     ios: {
       activityItemSources: [

@@ -1,5 +1,6 @@
 import React from 'react';
-import { Dimensions, FlatList } from 'react-native';
+import { FlatList } from 'react-native';
+import { responsiveHeight } from 'react-native-responsive-dimensions';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchPageIfNeeded } from '../../../../actions/repository';
 import {
@@ -25,7 +26,7 @@ const RepositoryList = () => {
     const THRESHOLD = 2000;
     const { contentOffset, contentSize } = evt.nativeEvent;
     const distanceToBottom =
-      contentSize.height - contentOffset.y - Dimensions.get('window').height;
+      contentSize.height - contentOffset.y - responsiveHeight(100);
     if (distanceToBottom < THRESHOLD) {
       dispatch(fetchPageIfNeeded(query, page + 1));
     }
@@ -33,14 +34,14 @@ const RepositoryList = () => {
 
   return (
     <FlatList
+      testID='RepositoryList'
       data={flattenedList}
       onScroll={checkDistanceToBottom}
       keyExtractor={repo => repo.url}
       renderItem={({ item }) =>
         <RepositoryItem item={item} />
       }
-    >
-    </FlatList>
+    />
   );
 };
 

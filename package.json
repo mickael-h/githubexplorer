@@ -17,6 +17,7 @@
     "react-native-markdown-display": "^7.0.0-alpha.2",
     "react-native-navigation": "^7.2.0",
     "react-native-navigation-hooks": "^6.2.0",
+    "react-native-responsive-dimensions": "^3.1.1",
     "react-native-share": "^4.0.4",
     "react-native-vector-icons": "^7.1.0",
     "react-redux": "^7.2.1",

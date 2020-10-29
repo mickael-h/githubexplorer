@@ -11,6 +11,7 @@ import {
 import SearchInput from '../SearchInput';
 import FillerMessage from '../FillerMessage';
 import RepositoryList from '../RepositoryList';
+import texts from '../../../../texts';
 
 const SearchView = ({ toggleFilter }) => {
   const loadedRepos = useSelector(getLoadedRepositories);
@@ -29,12 +30,12 @@ const SearchView = ({ toggleFilter }) => {
       }
       {showError
         ? <FillerMessage error
-          value={'Your search returned an error.'} />
+          value={texts.search_error} />
         : null
       }
       {showRepos
         ? <RepositoryList />
-        : <FillerMessage value={'Your search did not yield any results.'} />
+        : <FillerMessage value={texts.search_empty} />
       }
       <FloatingButton name='favorite' onPress={toggleFilter} />
     </View>

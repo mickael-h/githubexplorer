@@ -71,7 +71,7 @@ export const RAW_PAGE_EXAMPLE = Object.freeze({
   ],
 });
 
-export const EMPTY_RAW_PAGE_EXAMPLE = Object.freeze({
+export const EMPTY_RAW_PAGE = Object.freeze({
   items: [],
 });
 
@@ -95,9 +95,23 @@ export const STATE_WITH_1_LOADED_REPO = Object.freeze({
   loadedRepositories: [[REPO_EXAMPLE_1]],
 });
 
+export const STATE_WITH_3_LOADED_REPOS = Object.freeze({
+  ...initialState,
+  page: 1,
+  loadedRepositories: [PAGE_EXAMPLE],
+});
+
 export const STATE_WITH_DISPLAYED_REPO = Object.freeze({
   ...initialState,
   displayedRepository: REPO_EXAMPLE_1,
+});
+
+export const STATE_WITH_DISPLAYED_REPO_WITH_README = Object.freeze({
+  ...initialState,
+  displayedRepository: {
+    ...REPO_EXAMPLE_1,
+    readme: DECODED_README,
+  },
 });
 
 export const STATE_WITH_BOOKMARKED_REPOS_TO_FETCH = Object.freeze({

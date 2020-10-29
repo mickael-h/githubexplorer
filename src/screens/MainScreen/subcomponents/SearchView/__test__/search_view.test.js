@@ -5,9 +5,13 @@ import fetchMock from 'fetch-mock-jest';
 import { configureStoreNoLogs } from '../../../../../store';
 import { Provider } from 'react-redux';
 import { NavigationProvider } from 'react-native-navigation-hooks/dist';
-import { RAW_PAGE_EXAMPLE } from '../../../../../data_examples/data_examples';
+import { RAW_PAGE_EXAMPLE, STATE_WITH_1_LOADED_REPO } from '../../../../../data_examples/data_examples';
+import configureMockStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
+import { initialState } from '../../../../../reducers/repositoryReducer';
 
-const store = configureStoreNoLogs();
+const middlewares = [thunk];
+const mockStore = configureMockStore(middlewares);
 
 // TODO: fix the weird "act" warning
 
@@ -23,6 +27,7 @@ describe('SearchView unit tests', () => {
     );
   });
   test('renders correctly', done => {
+    const store = mockStore({ repositoryReducer: STATE_WITH_1_LOADED_REPO });
     render(
       <NavigationProvider value={{ componentId: 2 }}>
         <Provider store={store}>
@@ -30,7 +35,27 @@ describe('SearchView unit tests', () => {
         </Provider>
       </NavigationProvider>
     );
-    // Because of useDebounce in SearchInput
+    // Because of useDebounce in SearchInput. Mocking doesn't work.
+    setTimeout(() => {
+      done();
+    }, 1100);
+  });
+
+  test('renders correctly with error', done => {
+    const store = mockStore({
+      repositoryReducer: {
+        ...initialState,
+        error: 'some error',
+      },
+    });
+    render(
+      <NavigationProvider value={{ componentId: 2 }}>
+        <Provider store={store}>
+          <SearchView />
+        </Provider>
+      </NavigationProvider>
+    );
+    // Because of useDebounce in SearchInput. Mocking doesn't work.
     setTimeout(() => {
       done();
     }, 1100);

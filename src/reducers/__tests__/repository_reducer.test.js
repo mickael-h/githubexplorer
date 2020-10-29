@@ -37,7 +37,7 @@ import {
   RAW_REPO_EXAMPLE_3,
   PAGE_EXAMPLE,
   RAW_PAGE_EXAMPLE,
-  EMPTY_RAW_PAGE_EXAMPLE,
+  EMPTY_RAW_PAGE,
   ENCODED_README,
   DECODED_README,
   STATE_WITH_1_LOADED_REPO,
@@ -349,7 +349,7 @@ describe('search async unit tests', () => {
       sort: 'stars',
       page: 1,
     })}`, {
-      body: EMPTY_RAW_PAGE_EXAMPLE,
+      body: EMPTY_RAW_PAGE,
     });
 
     return store.dispatch(fetchPageIfNeeded('search_terms', 1))

@@ -44,10 +44,9 @@ const RepositoryScreen = () => {
           ? <ActivityIndicator animating size='large' color='blue' />
           : null
         }
-        {readme == null ? null :
-          <Markdown>
-            {readme}
-          </Markdown>
+        {Boolean(readme)
+          ? <Markdown>{readme}</Markdown>
+          : null
         }
       </ScrollView>
       <FloatingButton name='share' onPress={() => share(htmlUrl)} />
