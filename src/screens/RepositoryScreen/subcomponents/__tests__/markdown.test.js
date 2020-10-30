@@ -12,6 +12,7 @@ describe('MardownView tests', () => {
 
   test('isUrl works', () => {
     expect(isUrl('http://example.com?arg1=1&arg2=2')).toBe(true);
+    expect(isUrl('https://example.com/file.pdf')).toBe(true);
     expect(isUrl('#sectionlink')).toBe(false);
   });
 });
