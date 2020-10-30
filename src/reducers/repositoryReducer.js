@@ -120,7 +120,7 @@ const receivePage = (state, { query, page, error, repos }) => {
 const updateBookmarks = (state, { bookmarkedRepositories }) => ({
   ...state,
   bookmarkedRepositories:
-    bookmarkedRepositories.sort((a, b) => b.stars - a.stars),
+    bookmarkedRepositories.sort(sortRepos),
 });
 
 const requestBookmarks = state => ({
@@ -151,7 +151,7 @@ const receiveBookmarks = (state, { error, repos }) => {
   const bookmarkedRepositories = [
     ...state.bookmarkedRepositories,
     ...loadedBookmarks,
-  ].sort((a, b) => b.stars - a.stars);
+  ].sort(sortRepos);
 
   return {
     ...state,
@@ -160,6 +160,9 @@ const receiveBookmarks = (state, { error, repos }) => {
     bookmarkedRepositories,
   };
 };
+
+const sortRepos = (repo1, repo2) =>
+  repo2.stars - repo1.stars;
 
 const receiveReadme = (state, { readmeError, readme, repoUrl }) => {
   const displayedRepo = state.displayedRepository;
