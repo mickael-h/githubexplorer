@@ -20,7 +20,7 @@ I used React Native Navigation, which is definitely better for performance, but 
 ## Unit / integration tests results
 A good app is a well-tested app :)
 Not everything is represented in there though: I had to mock my entire Share wrapper to avoid some problems where it's used.
-The Share module uses NativeModules in static variables, so the simple fact of importing it in Jest will result in a crash, even if you mock it...
+It's a neat little module, but like most native modules, implementing it complexifies testing.
 ![Test Results](https://i.imgur.com/cOqFIEc.png "All clear!")
 ![Satisfaction](https://i.imgur.com/cLLOVbb.png "Feels good")
 
