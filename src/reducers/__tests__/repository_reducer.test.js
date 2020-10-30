@@ -309,6 +309,24 @@ describe('search async unit tests', () => {
       });
   });
 
+  test('search dispatch with API limit reached', () => {
+    const store = mockStore({ repositoryReducer: STATE_WITH_1_LOADED_REPO });
+    fetchMock.getOnce(`${API_URL}${SEARCH_ROUTE}?${queryString.stringify({
+      q: 'search_terms',
+      sort: 'stars',
+      page: 1,
+    })}`, {
+      body: {
+        message: 'some_error',
+      },
+    });
+
+    return store.dispatch(fetchPageIfNeeded('search_terms', 1))
+      .then(() => {
+        expect(store.getActions()).toEqual(searchExpectedActionsWithErrors);
+      });
+  });
+
   test('search receive page action with errors', () => {
     const stateAfterRequest = {
       ...initialState,

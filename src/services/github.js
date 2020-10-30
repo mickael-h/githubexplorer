@@ -21,6 +21,9 @@ export const fetchMostStarred = async (query, page) => {
   }
   const URL = getReposByStarsRoute(query, page);
   const json = await fetchJson(URL);
+  if (!('items' in json)) {
+    return Promise.reject(json.message);
+  }
   return json.items.map(convertRepoJsonToModel);
 };
 
