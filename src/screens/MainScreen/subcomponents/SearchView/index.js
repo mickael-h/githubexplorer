@@ -7,6 +7,7 @@ import {
   getLoadedRepositories,
   isFetchingSearch,
   hasSearchError,
+  searchErrorMessage,
 } from '../../../../selectors';
 import SearchInput from '../SearchInput';
 import FillerMessage from '../FillerMessage';
@@ -17,19 +18,24 @@ const SearchView = ({ toggleFilter }) => {
   const loadedRepos = useSelector(getLoadedRepositories);
   const loading = useSelector(isFetchingSearch);
   const error = useSelector(hasSearchError);
+  const errorMessage = useSelector(searchErrorMessage);
   const hasRepos = loadedRepos.length > 0 && loadedRepos[0].length > 0;
   const showRepos = hasRepos || loading || error;
   const showLoading = loading && !hasRepos;
   const showError = error && !loading && !hasRepos;
+
   return (
-    <View style={style.mainView}>
+    <View
+      testID='SearchView'
+      style={style.mainView}
+    >
       <SearchInput />
       {showLoading
         ? <ActivityIndicator animating size='large' color='blue' />
         : null
       }
       {showError
-        ? <FillerMessage error
+        ? <FillerMessage error errorMessage={errorMessage}
           value={texts.search_error} />
         : null
       }

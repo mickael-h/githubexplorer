@@ -10,6 +10,9 @@ export const isFetchingSearch = state =>
 export const hasSearchError = state =>
   state.repositoryReducer.error != null;
 
+export const searchErrorMessage = state =>
+  state.repositoryReducer.error;
+
 export const isFetchingBookmarks = state =>
   state.repositoryReducer.fetchingBookmarks;
 

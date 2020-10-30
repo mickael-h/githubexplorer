@@ -24,7 +24,7 @@ const RepositoryScreen = () => {
   } = useSelector(getDisplayedRepository);
 
   return (
-    <View style={style.mainView}>
+    <View testID='RepositoryScreen' style={style.mainView}>
       <ScrollView style={style.mainView}>
         <View style={style.titleCtn}>
           <Avatar source={{ uri: avatarUrl }} size='large' />

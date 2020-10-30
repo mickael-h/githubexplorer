@@ -19,6 +19,7 @@ const SearchInput = () => {
 
   return (
     <Input
+      testID='SearchInput'
       placeholder={texts.placeholder_search}
       value={searchQuery}
       onChangeText={txt => setSearchQuery(txt)}
