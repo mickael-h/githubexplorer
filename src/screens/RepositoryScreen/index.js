@@ -41,11 +41,17 @@ const RepositoryScreen = () => {
         </View>
         <Card.Divider style={style.divider} />
         {fetchingReadme && !readmeError
-          ? <ActivityIndicator animating size='large' color='blue' />
+          ? <ActivityIndicator
+            testID='ActivityIndicator'
+            animating size='large'
+            color='blue'
+          />
           : null
         }
         {Boolean(readme)
-          ? <Markdown>{readme}</Markdown>
+          ? <View testID='Markdown'>
+            <Markdown>{readme}</Markdown>
+          </View>
           : null
         }
       </ScrollView>

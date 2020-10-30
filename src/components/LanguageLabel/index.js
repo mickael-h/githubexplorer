@@ -6,7 +6,7 @@ import style from './style';
 
 const LanguageLabel = ({ language }) => {
   return (
-    <View style={style.mainView}>
+    <View testID='LanguageLabel' style={style.mainView}>
       <Icon name='circle' size={18} color={LANGUAGE_COLORS[language]} />
       <ListItem.Subtitle> {language}</ListItem.Subtitle>
     </View>
