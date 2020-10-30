@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { FlatList } from 'react-native';
 import { responsiveHeight } from 'react-native-responsive-dimensions';
 import { useDispatch, useSelector } from 'react-redux';
@@ -32,15 +32,24 @@ const RepositoryList = () => {
     }
   };
 
+  const renderItem = useCallback(
+    ({ item }) => <RepositoryItem item={item} />,
+    [],
+  );
+
+  const keyExtractor = useCallback(
+    repo => repo.url,
+    [],
+  );
+
   return (
     <FlatList
       testID='RepositoryList'
       data={flattenedList}
+      windowSize={10}
       onScroll={checkDistanceToBottom}
-      keyExtractor={repo => repo.url}
-      renderItem={({ item }) =>
-        <RepositoryItem item={item} />
-      }
+      keyExtractor={keyExtractor}
+      renderItem={renderItem}
     />
   );
 };
