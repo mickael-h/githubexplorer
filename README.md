@@ -12,10 +12,10 @@ I'm usually not a big fan of Redux (I prefer MobX State Tree), but at least Redu
 I used React Native Navigation, which is definitely better for performance, but made testing navigation a little bit harder.
 
 ## Screenshots
-![Screenshot1](https://i.imgur.com/hiV4Uxo.png "")
-![Screenshot1](https://i.imgur.com/yYwZqgE.png "")
-![Screenshot1](https://i.imgur.com/oUJQau4.png "")
-![Screenshot1](https://i.imgur.com/wHcpYrM.png "")
+![Screenshot1](https://i.imgur.com/hiV4Uxo.png "Screenshot 1")
+![Screenshot2](https://i.imgur.com/yYwZqgE.png "Screenshot 2")
+![Screenshot3](https://i.imgur.com/oUJQau4.png "Screenshot 3")
+![Screenshot4](https://i.imgur.com/4FoML22.png "Screenshot 4")
 
 ## Unit / integration tests results
 A good app is a well-tested app :)
