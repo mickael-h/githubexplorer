@@ -11,6 +11,12 @@ I use SonarLint to ensure code consistency and cleanliness.
 I'm usually not a big fan of Redux (I prefer MobX State Tree), but at least Redux has the advantage of being very easy to test.
 I used React Native Navigation, which is definitely better for performance, but made testing navigation a little bit harder.
 
+## Screenshots
+![Screenshot1](https://i.imgur.com/hiV4Uxo.png "")
+![Screenshot1](https://i.imgur.com/yYwZqgE.png "")
+![Screenshot1](https://i.imgur.com/oUJQau4.png "")
+![Screenshot1](https://i.imgur.com/wHcpYrM.png "")
+
 ## Unit / integration tests results
 A good app is a well-tested app :)
 Not everything is represented in there though: I had to mock my entire Share wrapper to avoid some problems where it's used.
