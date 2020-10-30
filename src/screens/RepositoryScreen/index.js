@@ -1,7 +1,6 @@
 import React from 'react';
 import { ActivityIndicator, ScrollView, Text, View } from 'react-native';
 import { Avatar, Card, ListItem } from 'react-native-elements';
-import Markdown from 'react-native-markdown-display';
 import { useSelector } from 'react-redux';
 import FloatingButton from '../../components/FloatingButton';
 import LanguageLabel from '../../components/LanguageLabel';
@@ -9,6 +8,7 @@ import StarCounter from '../../components/StarCounter';
 import { getDisplayedRepository } from '../../selectors';
 import share from '../../services/sharing';
 import style from './style';
+import MarkdownView from './subcomponents/MarkdownView';
 
 const RepositoryScreen = () => {
   const {
@@ -49,9 +49,7 @@ const RepositoryScreen = () => {
           : null
         }
         {Boolean(readme)
-          ? <View testID='Markdown'>
-            <Markdown>{readme}</Markdown>
-          </View>
+          ? <MarkdownView content={readme} />
           : null
         }
       </ScrollView>
