@@ -119,7 +119,8 @@ const receivePage = (state, { query, page, error, repos }) => {
 
 const updateBookmarks = (state, { bookmarkedRepositories }) => ({
   ...state,
-  bookmarkedRepositories,
+  bookmarkedRepositories:
+    bookmarkedRepositories.sort((a, b) => b.stars - a.stars),
 });
 
 const requestBookmarks = state => ({
