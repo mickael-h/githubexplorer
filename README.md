@@ -21,7 +21,7 @@ I used React Native Navigation, which is definitely better for performance, but 
 A good app is a well-tested app :)
 Not everything is represented in there though: I had to mock my entire Share wrapper to avoid some problems where it's used.
 It's a neat little module, but like most native modules, implementing it complexifies testing.
-![Test Results](https://i.imgur.com/cOqFIEc.png "All clear!")
+![Test Results](https://i.imgur.com/Eea6UHo.png "All clear!")
 ![Satisfaction](https://i.imgur.com/cLLOVbb.png "Feels good")
 
 ## End-to-end tests
@@ -31,7 +31,7 @@ I added 2 Detox scenarios :
 - 1 that checks searching for a repository, scrolling through search results, and previewing a repository.
 
 ## Features ideas (for later)
-- AsyncStorage to keep bookmarks
+- AsyncStorage to keep bookmarks :heavy_check_mark:
 - Localization
 - Sharing to contacts
 - Add more information to the preview screen top card
@@ -41,6 +41,7 @@ I added 2 Detox scenarios :
 - pullToRefresh on lists
 
 ## Other things to do
-- Optimize rendering
+- Optimize rendering :heavy_check_mark:
 - Split the store's tests into several files
 - Figure out why the SearchView makes a weird "act" warning in Jest
+- Optimize rendering even more
