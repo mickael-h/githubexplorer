@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { fetchBookmarksIfNeeded } from '../../actions/repository';
+import { fetchBookmarksIfNeeded, loadBookmarks } from '../../actions/repository';
 import texts from '../../texts';
 import BookmarksView from './subcomponents/BookmarksView';
 import SearchView from './subcomponents/SearchView';
@@ -8,6 +8,10 @@ import SearchView from './subcomponents/SearchView';
 const MainScreen = () => {
   const dispatch = useDispatch();
   const [filterBookmarks, setFilterBookmarks] = useState(false);
+
+  useEffect(() => {
+    dispatch(loadBookmarks('github_bookmarks'));
+  }, []);
 
   const toggleFilter = () => {
     const willFilter = !filterBookmarks;

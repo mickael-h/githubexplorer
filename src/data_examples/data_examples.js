@@ -1,6 +1,19 @@
 import { decode as decodeB64 } from 'base-64';
 import { decode as decodeUTF8 } from 'utf8';
-import { initialState } from '../reducers/repositoryReducer';
+
+const INITIAL_STATE = {
+  displayedRepository: {},
+  loadedRepositories: [],
+  bookmarkedRepositories: [],
+  bookmarkedURLs: [],
+  query: '',
+  page: 0,
+  hasReachedFinalPage: false,
+  error: null,
+  bookmarkError: null,
+  fetching: false,
+  fetchingBookmarks: false,
+};
 
 export const REPO_URL_EXAMPLE_1 = 'https://api.github.com/repos/mickael-h/colorpicker';
 export const REPO_URL_EXAMPLE_2 = 'https://api.github.com/repos/mickael-h/bus_guide';
@@ -90,24 +103,24 @@ export const ENCODED_README = 'IyBjb2xvcnBpY2tlcgpBIHNpbXBsZSBjb2xvciBwaWNrZXIgY
 
 export const DECODED_README = decodeUTF8(decodeB64(ENCODED_README));
 export const STATE_WITH_1_LOADED_REPO = Object.freeze({
-  ...initialState,
+  ...INITIAL_STATE,
   page: 1,
   loadedRepositories: [[REPO_EXAMPLE_1]],
 });
 
 export const STATE_WITH_3_LOADED_REPOS = Object.freeze({
-  ...initialState,
+  ...INITIAL_STATE,
   page: 1,
   loadedRepositories: [PAGE_EXAMPLE],
 });
 
 export const STATE_WITH_DISPLAYED_REPO = Object.freeze({
-  ...initialState,
+  ...INITIAL_STATE,
   displayedRepository: REPO_EXAMPLE_1,
 });
 
 export const STATE_WITH_DISPLAYED_REPO_WITH_README = Object.freeze({
-  ...initialState,
+  ...INITIAL_STATE,
   displayedRepository: {
     ...REPO_EXAMPLE_1,
     readme: DECODED_README,

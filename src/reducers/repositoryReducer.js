@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   BOOKMARK_REPO,
   REMOVE_BOOKMARK,
@@ -8,6 +9,7 @@ import {
   REQUEST_BOOKMARKS,
   RECEIVE_BOOKMARKS,
   RECEIVE_README,
+  ADD_STORED_BOOKMARKS,
 } from '../actions/types';
 
 // page is initialized to 0 to show
@@ -47,20 +49,38 @@ const repositoryReducer = (state = initialState, action) => {
       return receiveBookmarks(state, action);
     case RECEIVE_README:
       return receiveReadme(state, action);
+    case ADD_STORED_BOOKMARKS:
+      return addStoredBookmarks(state, action);
     default:
       return state;
   }
 };
 
-const addBookmark = (state, { url }) => ({
+const addBookmark = (state, { url }) => {
+  const newState = {
+    ...state,
+    bookmarkedURLs: state.bookmarkedURLs.concat(url),
+  };
+  saveBookmarks(newState.bookmarkedURLs);
+  return newState;
+};
+
+const addStoredBookmarks = (state, { urls }) => ({
   ...state,
-  bookmarkedURLs: state.bookmarkedURLs.concat(url),
+  bookmarkedURLs: state.bookmarkedURLs.concat(urls),
 });
 
-const removeBookmark = (state, { url }) => ({
-  ...state,
-  bookmarkedURLs: state.bookmarkedURLs.filter(bUrl => bUrl !== url),
-});
+const removeBookmark = (state, { url }) => {
+  const newState = {
+    ...state,
+    bookmarkedURLs: state.bookmarkedURLs.filter(bUrl => bUrl !== url),
+  };
+  saveBookmarks(newState.bookmarkedURLs);
+  return newState;
+};
+
+const saveBookmarks = bookmarks =>
+  AsyncStorage.setItem('github_bookmarks', JSON.stringify(bookmarks));
 
 const selectRepo = (state, { repo }) => ({
   ...state,

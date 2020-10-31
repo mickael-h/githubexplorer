@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { fetchMostStarred, fetchRepos, fetchReadme } from '../services/github';
 import {
   BOOKMARK_REPO,
@@ -9,6 +10,7 @@ import {
   UPDATE_BOOKMARKS,
   REQUEST_BOOKMARKS,
   RECEIVE_BOOKMARKS,
+  ADD_STORED_BOOKMARKS,
 } from './types';
 
 export const bookmarkRepo = url => ({
@@ -95,6 +97,19 @@ const receivePage = (query, page, repos, error = null) => ({
   repos,
 });
 
+export const loadBookmarks = key =>
+  async dispatch => {
+    const bookmarks = JSON.parse(await AsyncStorage.getItem(key));
+    return Array.isArray(bookmarks) && bookmarks.length > 0
+      ? dispatch(addStoredBookmarks(bookmarks))
+      : null;
+  };
+
+const addStoredBookmarks = urls => ({
+  type: ADD_STORED_BOOKMARKS,
+  urls,
+});
+
 export const fetchBookmarksIfNeeded = () =>
   (dispatch, getState) => {
     const state = getState().repositoryReducer;
@@ -143,8 +158,8 @@ const updateBookmarks = bookmarkedRepositories => ({
   bookmarkedRepositories,
 });
 
-const fetchBookmarks = repoURLsToLoad => {
-  return async dispatch => {
+const fetchBookmarks = repoURLsToLoad =>
+  async dispatch => {
     dispatch(requestBookmarks());
     try {
       const res = await fetchRepos(repoURLsToLoad);
@@ -153,7 +168,6 @@ const fetchBookmarks = repoURLsToLoad => {
       return dispatch(receiveBookmarks(null, error));
     }
   };
-};
 
 const requestBookmarks = () => ({
   type: REQUEST_BOOKMARKS,

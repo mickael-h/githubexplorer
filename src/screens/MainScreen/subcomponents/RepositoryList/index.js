@@ -44,6 +44,7 @@ const RepositoryList = () => {
 
   return (
     <FlatList
+      removeClippedSubviews
       testID='RepositoryList'
       data={flattenedList}
       windowSize={10}

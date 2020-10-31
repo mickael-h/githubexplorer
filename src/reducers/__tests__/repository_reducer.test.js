@@ -10,6 +10,7 @@ import {
   DEFAULT_QUERY,
 } from '../../services/github';
 import {
+  ADD_STORED_BOOKMARKS,
   RECEIVE_BOOKMARKS,
   RECEIVE_PAGE,
   RECEIVE_README,
@@ -24,6 +25,7 @@ import {
   setDisplayedRepo,
   fetchPageIfNeeded,
   fetchBookmarksIfNeeded,
+  loadBookmarks,
 } from '../../actions/repository';
 import {
   STATE_WITH_DISPLAYED_REPO,
@@ -416,6 +418,33 @@ describe('search async unit tests', () => {
 describe('fetch bookmarks async unit tests', () => {
   afterEach(() => {
     fetchMock.restore();
+  });
+
+  const load3BookmarksExpectedActions = [{
+    type: ADD_STORED_BOOKMARKS,
+    urls: [
+      REPO_URL_EXAMPLE_1,
+      REPO_URL_EXAMPLE_2,
+      REPO_URL_EXAMPLE_3,
+    ],
+  }];
+
+  test('load 3 bookmarks from storage dispatch', () => {
+    const store = mockStore({ repositoryReducer: initialState });
+
+    return store.dispatch(loadBookmarks('fake_bookmarks'))
+      .then(() => {
+        expect(store.getActions()).toEqual(load3BookmarksExpectedActions);
+      });
+  });
+
+  test('load 3 bookmarks from storage actions', () => {
+    const stateAfterLoad =
+      repositoryReducer(initialState, load3BookmarksExpectedActions[0]);
+    expect(stateAfterLoad).toEqual({
+      ...initialState,
+      bookmarkedURLs: load3BookmarksExpectedActions[0].urls,
+    });
   });
 
   const getBookmarksExpectedActions = [
