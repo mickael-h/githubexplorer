@@ -9,12 +9,6 @@ import {
   STATE_WITH_DISPLAYED_REPO_WITH_README,
 } from '../../../data_examples/data_examples';
 
-jest.mock('react-native-share', () => ({
-  default: jest.fn(),
-}));
-
-jest.mock('../../../services/sharing', () => jest.fn());
-
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 
