@@ -1,6 +1,5 @@
-import React from 'react';
-import { View } from 'react-native';
-import { Avatar, ListItem } from 'react-native-elements';
+import React, { useCallback } from 'react';
+import { Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from 'react-native-navigation-hooks';
 import style from './style';
 import { useDispatch } from 'react-redux';
@@ -8,6 +7,7 @@ import { setDisplayedRepo } from '../../../../actions/repository';
 import StarCounter from '../../../../components/StarCounter';
 import LanguageLabel from '../../../../components/LanguageLabel';
 import BookmarkButton from '../BookmarkButton';
+import FastImage from 'react-native-fast-image';
 
 const RepositoryItem = ({ item }) => {
   const { push } = useNavigation();
@@ -21,38 +21,52 @@ const RepositoryItem = ({ item }) => {
     avatarUrl,
   } = item;
 
-  const previewRepo = () => {
-    dispatch(setDisplayedRepo(item));
-    push('RepositoryScreen', null,
-      {
-        topBar: {
-          title: {
-            text: name,
+  const previewRepo = useCallback(
+    () => {
+      dispatch(setDisplayedRepo(item));
+      push('RepositoryScreen', null,
+        {
+          topBar: {
+            title: {
+              text: name,
+            },
           },
-        },
-      });
-  };
+        });
+    },
+    [],
+  );
 
   return (
-    <ListItem
+    <TouchableOpacity
       testID={`RepoItem:${name}`}
-      bottomDivider
+      style={style.mainContainer}
       onPress={previewRepo}
     >
-      <Avatar source={{ uri: avatarUrl }} />
-      <ListItem.Content>
-        <ListItem.Title>{name}</ListItem.Title>
-        <ListItem.Subtitle>{description}</ListItem.Subtitle>
-        <View style={style.repoItemInfoContainer}>
+      <FastImage
+        source={{ uri: avatarUrl }}
+        style={style.avatar}
+      />
+      <View style={style.contentContainer}>
+        <Text style={style.title}>{name}</Text>
+        <Text
+          style={style.subtitle}
+          numberOfLines={3}
+        >
+          {description}
+        </Text>
+        <View style={style.infoContainer}>
           <StarCounter stars={stars} />
           {Boolean(language)
             ? <LanguageLabel language={language} />
             : null
           }
         </View>
-      </ListItem.Content>
-      <BookmarkButton url={url} />
-    </ListItem>
+      </View>
+      <BookmarkButton
+        style={style.bookmarkButton}
+        url={url}
+      />
+    </TouchableOpacity>
   );
 };
 

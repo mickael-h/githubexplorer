@@ -1,6 +1,6 @@
 import React from 'react';
-import { View } from 'react-native';
-import { Icon, ListItem } from 'react-native-elements';
+import { Text, View } from 'react-native';
+import { Icon } from 'react-native-elements';
 import { STAR_COLOR } from '../../services/github';
 import style from './style';
 
@@ -12,7 +12,7 @@ const StarCounter = ({ stars }) => {
   return (
     <View style={style.mainView}>
       <Icon name='star' size={18} color={STAR_COLOR} />
-      <ListItem.Subtitle> {starCount}</ListItem.Subtitle>
+      <Text style={style.text}> {starCount}</Text>
     </View>
   );
 };

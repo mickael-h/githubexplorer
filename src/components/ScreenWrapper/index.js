@@ -1,10 +1,10 @@
 import React from 'react';
-import configureStore from '../../store';
+import { configureStoreNoLogs } from '../../store';
 import { Provider as ReduxProvider } from 'react-redux';
 import { SafeAreaView, StatusBar, StyleSheet } from 'react-native';
 import { NavigationProvider } from 'react-native-navigation-hooks';
 
-const store = configureStore();
+const store = configureStoreNoLogs();
 const ScreenWrapper = props =>
   <NavigationProvider value={{ componentId: props.componentId }}>
     <ReduxProvider store={store}>

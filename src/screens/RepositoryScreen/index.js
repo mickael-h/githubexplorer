@@ -1,6 +1,7 @@
 import React from 'react';
 import { ActivityIndicator, ScrollView, Text, View } from 'react-native';
-import { Avatar, Card, ListItem } from 'react-native-elements';
+import { Card, ListItem } from 'react-native-elements';
+import FastImage from 'react-native-fast-image';
 import { useSelector } from 'react-redux';
 import FloatingButton from '../../components/FloatingButton';
 import LanguageLabel from '../../components/LanguageLabel';
@@ -27,7 +28,7 @@ const RepositoryScreen = () => {
     <View testID='RepositoryScreen' style={style.mainView}>
       <ScrollView style={style.mainView}>
         <View style={style.titleCtn}>
-          <Avatar source={{ uri: avatarUrl }} size='large' />
+          <FastImage source={{ uri: avatarUrl }} style={style.avatar} />
           <Text style={style.title}>{name}</Text>
         </View>
         <Card.Divider style={style.divider} />

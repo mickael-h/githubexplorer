@@ -13,6 +13,11 @@ const style = StyleSheet.create({
   row: {
     flexDirection: 'row',
   },
+  avatar: {
+    marginHorizontal: 20,
+    width: 90,
+    height: 90,
+  },
   titleCtn: {
     flexDirection: 'row',
     alignItems: 'center',

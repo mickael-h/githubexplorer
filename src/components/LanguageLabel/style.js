@@ -6,6 +6,9 @@ const style = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
   },
+  text: {
+    color: 'grey',
+  },
 });
 
 export default style;
