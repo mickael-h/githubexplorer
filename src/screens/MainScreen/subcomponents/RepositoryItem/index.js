@@ -9,6 +9,8 @@ import LanguageLabel from '../../../../components/LanguageLabel';
 import BookmarkButton from '../BookmarkButton';
 import FastImage from 'react-native-fast-image';
 
+export const ITEM_HEIGHT = 150;
+
 const RepositoryItem = ({ item }) => {
   const { push } = useNavigation();
   const dispatch = useDispatch();

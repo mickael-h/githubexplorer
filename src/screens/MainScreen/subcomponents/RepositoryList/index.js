@@ -9,7 +9,7 @@ import {
   getPage,
   getQuery,
 } from '../../../../selectors';
-import RepositoryItem from '../RepositoryItem';
+import RepositoryItem, { ITEM_HEIGHT } from '../RepositoryItem';
 
 const RepositoryList = () => {
   const page = useSelector(getPage);
@@ -37,6 +37,15 @@ const RepositoryList = () => {
     [],
   );
 
+  const getItemLayout = useCallback(
+    (data, index) => ({
+      length: ITEM_HEIGHT,
+      offset: index * ITEM_HEIGHT,
+      index,
+    }),
+    [],
+  );
+
   const keyExtractor = useCallback(
     repo => repo.url,
     [],
@@ -47,10 +56,12 @@ const RepositoryList = () => {
       removeClippedSubviews
       testID='RepositoryList'
       data={flattenedList}
-      windowSize={10}
+      windowSize={8}
+      getItemLayout={getItemLayout}
       onScroll={checkDistanceToBottom}
       keyExtractor={keyExtractor}
       renderItem={renderItem}
+      maxToRenderPerBatch={8}
     />
   );
 };
