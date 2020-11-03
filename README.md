@@ -3,7 +3,7 @@ This was fun to make. You can search for repositories, bookmark them, and check 
 Search results will automatically update as you scroll through them.
 
 When the readme is big, rendering the preview screen can take a lot of time.
-This might be a good opportunity to try React's experimental concurrent mode.
+This might be a good opportunity to try React's experimental concurrent mode... when it's available for React Native.
 
 The code should be clean and self-explanatory. Classes, functions, and lines are kept short to ensure legibility.
 I use SonarLint to ensure code consistency and cleanliness.
