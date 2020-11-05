@@ -112,11 +112,14 @@ const addStoredBookmarks = urls => ({
 
 export const fetchBookmarksIfNeeded = () =>
   (dispatch, getState) => {
-    const state = getState().repositoryReducer;
-    const reposAlreadyLoaded = getReposLoaded(state);
-    const repoURLsToLoad = getRepoURLsToLoad(state, reposAlreadyLoaded);
+    const {
+      bookmarkReducer: markState,
+      repositoryReducer: repoState,
+    } = getState();
+    const reposAlreadyLoaded = getReposLoaded(markState, repoState);
+    const repoURLsToLoad = getRepoURLsToLoad(markState, reposAlreadyLoaded);
     const loadedListNeedsUpdate =
-      !areRepoListsEqual(state.bookmarkedRepositories, reposAlreadyLoaded);
+      !areRepoListsEqual(markState.bookmarkedRepositories, reposAlreadyLoaded);
 
     if (loadedListNeedsUpdate) {
       dispatch(updateBookmarks(reposAlreadyLoaded));
@@ -133,7 +136,7 @@ const areRepoListsEqual = (list1, list2) =>
   list1.length == list2.length &&
   list1.every(repo1 => list2.some(repo2 => repo1.url == repo2.url));
 
-const getReposLoaded = ({ bookmarkedURLs, bookmarkedRepositories, loadedRepositories }) => {
+const getReposLoaded = ({ bookmarkedURLs, bookmarkedRepositories }, { loadedRepositories }) => {
   const flatLoaded = [].concat.apply([], loadedRepositories);
   const isInBookmarkURLsList = repo => bookmarkedURLs.includes(repo.url);
   const filteredLoaded = flatLoaded.filter(isInBookmarkURLsList);

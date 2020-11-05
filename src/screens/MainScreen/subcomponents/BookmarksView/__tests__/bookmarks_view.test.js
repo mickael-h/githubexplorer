@@ -8,9 +8,9 @@ import thunk from 'redux-thunk';
 import {
   REPO_EXAMPLE_1,
   STATE_WITH_BOOKMARK_NO_UPDATE_NEEDED,
+  INITIAL_STATE,
 } from '../../../../../data_examples';
 import { NavigationProvider } from 'react-native-navigation-hooks/dist';
-import { initialState } from '../../../../../reducers/repositoryReducer';
 import texts from '../../../../../texts';
 
 const middlewares = [thunk];
@@ -19,9 +19,7 @@ const mockStore = configureMockStore(middlewares);
 describe('BookmarksView unit tests', () => {
 
   test('renders bookmarks correctly', () => {
-    const store = mockStore({
-      repositoryReducer: STATE_WITH_BOOKMARK_NO_UPDATE_NEEDED,
-    });
+    const store = mockStore(STATE_WITH_BOOKMARK_NO_UPDATE_NEEDED);
     const { queryByText } = render(
       <NavigationProvider value={{ componentId: 2 }}>
         <Provider store={store}>
@@ -34,9 +32,7 @@ describe('BookmarksView unit tests', () => {
   });
 
   test('renders no bookmarks message correctly', () => {
-    const store = mockStore({
-      repositoryReducer: initialState,
-    });
+    const store = mockStore(INITIAL_STATE);
     const { queryByText } = render(
       <NavigationProvider value={{ componentId: 2 }}>
         <Provider store={store}>
@@ -50,9 +46,10 @@ describe('BookmarksView unit tests', () => {
 
   test('renders bookmarks error message correctly', () => {
     const store = mockStore({
-      repositoryReducer: {
-        ...initialState,
-        bookmarkError: 'some error',
+      ...INITIAL_STATE,
+      bookmarkReducer: {
+        ...INITIAL_STATE.bookmarkReducer,
+        error: 'some error',
       },
     });
     const { queryByText } = render(
@@ -68,9 +65,10 @@ describe('BookmarksView unit tests', () => {
 
   test('renders loading indicator correctly', () => {
     const store = mockStore({
-      repositoryReducer: {
-        ...initialState,
-        fetchingBookmarks: true,
+      ...INITIAL_STATE,
+      bookmarkReducer: {
+        ...INITIAL_STATE.bookmarkReducer,
+        fetching: true,
       },
     });
     const { queryByTestId } = render(

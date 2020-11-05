@@ -16,7 +16,7 @@ const mockStore = configureMockStore(middlewares);
 describe('BookmarksList unit tests', () => {
   test('renders correctly', () => {
     useNavigation.mockReturnValue({ push: jest.fn() });
-    const store = mockStore({ repositoryReducer: STATE_WITH_BOOKMARK_NO_UPDATE_NEEDED });
+    const store = mockStore(STATE_WITH_BOOKMARK_NO_UPDATE_NEEDED);
     render(
       <Provider store={store}>
         <BookmarksList />

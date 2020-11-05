@@ -2,7 +2,7 @@ import queryString from 'query-string';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import fetchMock from 'fetch-mock-jest';
-import repositoryReducer, { initialState } from '../repositoryReducer';
+import repositoryReducer, { initialState as repoInitState } from '../repositoryReducer';
 import {
   README_ROUTE,
   API_URL,
@@ -10,67 +10,35 @@ import {
   DEFAULT_QUERY,
 } from '../../services/github';
 import {
-  ADD_STORED_BOOKMARKS,
-  RECEIVE_BOOKMARKS,
   RECEIVE_PAGE,
   RECEIVE_README,
-  REQUEST_BOOKMARKS,
   REQUEST_PAGE,
   SELECT_REPO,
-  UPDATE_BOOKMARKS,
 } from '../../actions/types';
 import {
-  bookmarkRepo,
-  removeBookmark,
   setDisplayedRepo,
   fetchPageIfNeeded,
-  fetchBookmarksIfNeeded,
-  loadBookmarks,
 } from '../../actions/repository';
 import {
   STATE_WITH_DISPLAYED_REPO,
   REPO_URL_EXAMPLE_1,
-  REPO_URL_EXAMPLE_2,
-  REPO_URL_EXAMPLE_3,
   REPO_EXAMPLE_1,
-  REPO_EXAMPLE_2,
-  REPO_EXAMPLE_3,
-  RAW_REPO_EXAMPLE_2,
-  RAW_REPO_EXAMPLE_3,
   PAGE_EXAMPLE,
   RAW_PAGE_EXAMPLE,
   EMPTY_RAW_PAGE,
   ENCODED_README,
+  INITIAL_STATE,
   DECODED_README,
   STATE_WITH_1_LOADED_REPO,
-  STATE_WITH_BOOKMARKED_REPOS_TO_FETCH,
-  STATE_WITH_1_LOADED_BOOKMARK,
-  STATE_WITH_1_BOOKMARKED_REPO_TO_FETCH,
-  STATE_WITH_BOOKMARK_NO_UPDATE_NEEDED,
 } from '../../data_examples';
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 
 describe('sync unit tests', () => {
-  test('add bookmark', () => {
-    const newState = repositoryReducer(STATE_WITH_1_LOADED_REPO, bookmarkRepo(REPO_URL_EXAMPLE_1));
-    expect(newState.bookmarkedURLs).toHaveLength(1);
-    expect(newState.bookmarkedURLs[0]).toEqual(REPO_URL_EXAMPLE_1);
-  });
-
-  test('remove bookmark', () => {
-    const newState = repositoryReducer(
-      STATE_WITH_BOOKMARKED_REPOS_TO_FETCH, removeBookmark(REPO_URL_EXAMPLE_2));
-    expect(newState.bookmarkedURLs).toEqual([
-      REPO_URL_EXAMPLE_1,
-      REPO_URL_EXAMPLE_3,
-    ]);
-  });
-
   test('wrong action and undefined state', () => {
     const newState = repositoryReducer(undefined, { type: 'wrong type' });
-    expect(newState).toBe(initialState);
+    expect(newState).toBe(repoInitState);
   });
 });
 
@@ -93,7 +61,7 @@ describe('select repo async unit tests', () => {
   ];
 
   test('select repository dispatch with readme', () => {
-    const store = mockStore({ repositoryReducer: STATE_WITH_1_LOADED_REPO });
+    const store = mockStore(STATE_WITH_1_LOADED_REPO);
     fetchMock.getOnce(REPO_URL_EXAMPLE_1 + README_ROUTE, {
       body: {
         encoding: 'base64',
@@ -108,7 +76,7 @@ describe('select repo async unit tests', () => {
   });
 
   test('select repository dispatch with raw readme', () => {
-    const store = mockStore({ repositoryReducer: STATE_WITH_1_LOADED_REPO });
+    const store = mockStore(STATE_WITH_1_LOADED_REPO);
     fetchMock.getOnce(REPO_URL_EXAMPLE_1 + README_ROUTE, {
       body: {
         content: DECODED_README,
@@ -122,15 +90,18 @@ describe('select repo async unit tests', () => {
   });
 
   test('reselect same repository dispatch', () => {
-    const store = mockStore({ repositoryReducer: STATE_WITH_DISPLAYED_REPO });
+    const store = mockStore(STATE_WITH_DISPLAYED_REPO);
     expect(store.dispatch(setDisplayedRepo(REPO_EXAMPLE_1))).toBeNull();
   });
 
   test('select repository actions with readme', () => {
     const stateAfterSelect =
-      repositoryReducer(STATE_WITH_1_LOADED_REPO, selectRepoWithReadmeExpectedActions[0]);
+      repositoryReducer(
+        STATE_WITH_1_LOADED_REPO.repositoryReducer,
+        selectRepoWithReadmeExpectedActions[0]
+      );
     expect(stateAfterSelect).toEqual({
-      ...STATE_WITH_1_LOADED_REPO,
+      ...STATE_WITH_1_LOADED_REPO.repositoryReducer,
       displayedRepository: {
         ...REPO_EXAMPLE_1,
         fetchingReadme: true,
@@ -152,8 +123,8 @@ describe('select repo async unit tests', () => {
 
   test('select repository actions with unexpected readme', () => {
     const stateAfterReceive =
-      repositoryReducer(initialState, selectRepoWithReadmeExpectedActions[1]);
-    expect(stateAfterReceive).toEqual(initialState);
+      repositoryReducer(repoInitState, selectRepoWithReadmeExpectedActions[1]);
+    expect(stateAfterReceive).toEqual(repoInitState);
   });
 
   const selectRepoWithoutReadmeExpectedActions = [
@@ -170,7 +141,7 @@ describe('select repo async unit tests', () => {
   ];
 
   test('select repository dispatch without readme', () => {
-    const store = mockStore({ repositoryReducer: STATE_WITH_1_LOADED_REPO });
+    const store = mockStore(STATE_WITH_1_LOADED_REPO);
     fetchMock.getOnce(REPO_URL_EXAMPLE_1 + README_ROUTE, {
       body: {
         message: 'Not Found',
@@ -186,9 +157,12 @@ describe('select repo async unit tests', () => {
 
   test('select repository actions without readme', () => {
     const stateAfterSelect =
-      repositoryReducer(STATE_WITH_1_LOADED_REPO, selectRepoWithoutReadmeExpectedActions[0]);
+      repositoryReducer(
+        STATE_WITH_1_LOADED_REPO.repositoryReducer,
+        selectRepoWithoutReadmeExpectedActions[0]
+      );
     expect(stateAfterSelect).toEqual({
-      ...STATE_WITH_1_LOADED_REPO,
+      ...STATE_WITH_1_LOADED_REPO.repositoryReducer,
       displayedRepository: {
         ...REPO_EXAMPLE_1,
         fetchingReadme: true,
@@ -231,7 +205,7 @@ describe('all most starred async unit tests', () => {
   ];
 
   test('get all most starred dispatch with results', () => {
-    const store = mockStore({ repositoryReducer: initialState });
+    const store = mockStore(INITIAL_STATE);
     fetchMock.getOnce(`${API_URL}${SEARCH_ROUTE}?${queryString.stringify({
       q: DEFAULT_QUERY,
       sort: 'stars',
@@ -247,15 +221,15 @@ describe('all most starred async unit tests', () => {
   });
 
   test('unneeded fetch dispatch', () => {
-    const store = mockStore({ repositoryReducer: STATE_WITH_1_LOADED_REPO });
+    const store = mockStore(STATE_WITH_1_LOADED_REPO);
     expect(store.dispatch(fetchPageIfNeeded('', 1))).toBeNull();
   });
 
   test('get all most starred actions with results', () => {
     const stateAfterRequest =
-      repositoryReducer(initialState, searchMostStarredExpectedActionsWithResults[0]);
+      repositoryReducer(repoInitState, searchMostStarredExpectedActionsWithResults[0]);
     expect(stateAfterRequest).toEqual({
-      ...initialState,
+      ...repoInitState,
       page: 1,
       fetching: true,
     });
@@ -293,7 +267,7 @@ describe('search async unit tests', () => {
   ];
 
   test('search dispatch with errors', () => {
-    const store = mockStore({ repositoryReducer: STATE_WITH_1_LOADED_REPO });
+    const store = mockStore(STATE_WITH_1_LOADED_REPO);
     fetchMock.getOnce(`${API_URL}${SEARCH_ROUTE}?${queryString.stringify({
       q: 'search_terms',
       sort: 'stars',
@@ -312,7 +286,7 @@ describe('search async unit tests', () => {
   });
 
   test('search dispatch with API limit reached', () => {
-    const store = mockStore({ repositoryReducer: STATE_WITH_1_LOADED_REPO });
+    const store = mockStore(STATE_WITH_1_LOADED_REPO);
     fetchMock.getOnce(`${API_URL}${SEARCH_ROUTE}?${queryString.stringify({
       q: 'search_terms',
       sort: 'stars',
@@ -331,7 +305,7 @@ describe('search async unit tests', () => {
 
   test('search receive page action with errors', () => {
     const stateAfterRequest = {
-      ...initialState,
+      ...repoInitState,
       query: 'search_terms',
       page: 1,
       fetching: true,
@@ -363,7 +337,7 @@ describe('search async unit tests', () => {
   ];
 
   test('search most starred dispatch without results', () => {
-    const store = mockStore({ repositoryReducer: STATE_WITH_1_LOADED_REPO });
+    const store = mockStore(STATE_WITH_1_LOADED_REPO);
     fetchMock.getOnce(`${API_URL}${SEARCH_ROUTE}?${queryString.stringify({
       q: 'search_terms',
       sort: 'stars',
@@ -380,7 +354,7 @@ describe('search async unit tests', () => {
 
   test('search receive page action for old query', () => {
     const stateAfterRequest = {
-      ...initialState,
+      ...repoInitState,
       query: 'new_search_terms',
       page: 1,
       fetching: true,
@@ -393,11 +367,11 @@ describe('search async unit tests', () => {
 
   test('search most starred actions without results', () => {
     const stateAfterRequest = repositoryReducer(
-      STATE_WITH_1_LOADED_REPO,
+      STATE_WITH_1_LOADED_REPO.repositoryReducer,
       searchMostStarredExpectedActionsWithoutResults[0]
     );
     expect(stateAfterRequest).toEqual({
-      ...STATE_WITH_1_LOADED_REPO,
+      ...STATE_WITH_1_LOADED_REPO.repositoryReducer,
       query: 'search_terms',
       page: 1,
       fetching: true,
@@ -412,159 +386,5 @@ describe('search async unit tests', () => {
       hasReachedFinalPage: true,
       fetching: false,
     });
-  });
-});
-
-describe('fetch bookmarks async unit tests', () => {
-  afterEach(() => {
-    fetchMock.restore();
-  });
-
-  const load3BookmarksExpectedActions = [{
-    type: ADD_STORED_BOOKMARKS,
-    urls: [
-      REPO_URL_EXAMPLE_1,
-      REPO_URL_EXAMPLE_2,
-      REPO_URL_EXAMPLE_3,
-    ],
-  }];
-
-  test('load 3 bookmarks from storage dispatch', () => {
-    const store = mockStore({ repositoryReducer: initialState });
-
-    return store.dispatch(loadBookmarks('fake_bookmarks'))
-      .then(() => {
-        expect(store.getActions()).toEqual(load3BookmarksExpectedActions);
-      });
-  });
-
-  test('load 3 bookmarks from storage actions', () => {
-    const stateAfterLoad =
-      repositoryReducer(initialState, load3BookmarksExpectedActions[0]);
-    expect(stateAfterLoad).toEqual({
-      ...initialState,
-      bookmarkedURLs: load3BookmarksExpectedActions[0].urls,
-    });
-  });
-
-  const getBookmarksExpectedActions = [
-    {
-      type: UPDATE_BOOKMARKS,
-      bookmarkedRepositories: [REPO_EXAMPLE_1],
-    },
-    {
-      type: REQUEST_BOOKMARKS,
-    },
-    {
-      type: RECEIVE_BOOKMARKS,
-      error: null,
-      repos: [
-        REPO_EXAMPLE_2,
-        REPO_EXAMPLE_3,
-      ],
-    },
-  ];
-
-  test('get bookmarked repositories dispatch', () => {
-    const store = mockStore({ repositoryReducer: STATE_WITH_BOOKMARKED_REPOS_TO_FETCH });
-    fetchMock.getOnce(REPO_URL_EXAMPLE_2, { body: RAW_REPO_EXAMPLE_2 });
-    fetchMock.getOnce(REPO_URL_EXAMPLE_3, { body: RAW_REPO_EXAMPLE_3 });
-
-    return store.dispatch(fetchBookmarksIfNeeded())
-      .then(() => {
-        expect(store.getActions()).toEqual(getBookmarksExpectedActions);
-      });
-  });
-
-  test('get bookmarks already loaded dispatch 1', () => {
-    const store = mockStore({ repositoryReducer: STATE_WITH_1_LOADED_BOOKMARK });
-    expect(store.dispatch(fetchBookmarksIfNeeded())).toBeNull();
-  });
-
-  test('get bookmarks already loaded dispatch 2', () => {
-    const store = mockStore({ repositoryReducer: STATE_WITH_BOOKMARK_NO_UPDATE_NEEDED });
-    expect(store.dispatch(fetchBookmarksIfNeeded())).toBeNull();
-  });
-
-  test('get bookmarks already loaded dispatch 3', () => {
-    const store = mockStore({ repositoryReducer: STATE_WITH_1_BOOKMARKED_REPO_TO_FETCH });
-    expect(store.dispatch(fetchBookmarksIfNeeded())).toBeNull();
-  });
-
-  test('get bookmarked repositories actions', () => {
-    const stateAfterUpdate =
-      repositoryReducer(STATE_WITH_BOOKMARKED_REPOS_TO_FETCH, getBookmarksExpectedActions[0]);
-    expect(stateAfterUpdate).toEqual({
-      ...STATE_WITH_BOOKMARKED_REPOS_TO_FETCH,
-      bookmarkedRepositories: [REPO_EXAMPLE_1],
-    });
-
-    const stateAfterRequest =
-      repositoryReducer(stateAfterUpdate, getBookmarksExpectedActions[1]);
-    expect(stateAfterRequest).toEqual({
-      ...stateAfterUpdate,
-      fetchingBookmarks: true,
-    });
-
-    const stateAfterReceive =
-      repositoryReducer(stateAfterRequest, getBookmarksExpectedActions[2]);
-    expect(stateAfterReceive).toEqual({
-      ...stateAfterRequest,
-      bookmarkError: null,
-      fetchingBookmarks: false,
-      bookmarkedRepositories: PAGE_EXAMPLE,
-    });
-  });
-
-  test('get bookmarks and receive unbookmarked repos action', () => {
-    const stateAfterReceive =
-      repositoryReducer(STATE_WITH_1_LOADED_BOOKMARK, getBookmarksExpectedActions[2]);
-    expect(stateAfterReceive).toEqual({
-      ...STATE_WITH_1_LOADED_BOOKMARK,
-      fetchingBookmarks: false,
-    });
-  });
-
-  const getBookmarksExpectedActionsWithError = [
-    getBookmarksExpectedActions[0],
-    getBookmarksExpectedActions[1],
-    {
-      type: RECEIVE_BOOKMARKS,
-      error: 'some_error',
-      repos: null,
-    },
-  ];
-
-
-  test('get bookmarked repositories actions with errors', () => {
-    const stateAfterRequest = {
-      ...STATE_WITH_BOOKMARKED_REPOS_TO_FETCH,
-      bookmarkedRepositories: [REPO_EXAMPLE_1],
-      fetchingBookmarks: true,
-    };
-
-    const stateAfterReceive =
-      repositoryReducer(stateAfterRequest, getBookmarksExpectedActionsWithError[2]);
-    expect(stateAfterReceive).toEqual({
-      ...stateAfterRequest,
-      fetchingBookmarks: false,
-      bookmarkError: 'some_error',
-    });
-  });
-
-  test('get bookmarked repositories dispatch with errors', () => {
-    const store = mockStore({ repositoryReducer: STATE_WITH_BOOKMARKED_REPOS_TO_FETCH });
-    fetchMock.getOnce(REPO_URL_EXAMPLE_2, {
-      body: {
-        errors: [],
-        message: 'some_error',
-      },
-    });
-    fetchMock.getOnce(REPO_URL_EXAMPLE_3, { body: RAW_REPO_EXAMPLE_3 });
-
-    return store.dispatch(fetchBookmarksIfNeeded())
-      .then(() => {
-        expect(store.getActions()).toEqual(getBookmarksExpectedActionsWithError);
-      });
   });
 });

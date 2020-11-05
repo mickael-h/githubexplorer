@@ -1,18 +1,22 @@
 import { decode as decodeB64 } from 'base-64';
 import { decode as decodeUTF8 } from 'utf8';
 
-const INITIAL_STATE = {
-  displayedRepository: {},
-  loadedRepositories: [],
-  bookmarkedRepositories: [],
-  bookmarkedURLs: [],
-  query: '',
-  page: 0,
-  hasReachedFinalPage: false,
-  error: null,
-  bookmarkError: null,
-  fetching: false,
-  fetchingBookmarks: false,
+export const INITIAL_STATE = {
+  repositoryReducer: {
+    displayedRepository: {},
+    loadedRepositories: [],
+    query: '',
+    page: 0,
+    hasReachedFinalPage: false,
+    error: null,
+    fetching: false,
+  },
+  bookmarkReducer: {
+    bookmarkedRepositories: [],
+    bookmarkedURLs: [],
+    error: null,
+    fetching: false,
+  },
 };
 
 export const REPO_URL_EXAMPLE_1 = 'https://api.github.com/repos/mickael-h/colorpicker';
@@ -103,52 +107,76 @@ export const ENCODED_README = 'IyBjb2xvcnBpY2tlcgpBIHNpbXBsZSBjb2xvciBwaWNrZXIgY
 
 export const DECODED_README = decodeUTF8(decodeB64(ENCODED_README));
 export const STATE_WITH_1_LOADED_REPO = Object.freeze({
-  ...INITIAL_STATE,
-  page: 1,
-  loadedRepositories: [[REPO_EXAMPLE_1]],
+  repositoryReducer: {
+    ...INITIAL_STATE.repositoryReducer,
+    page: 1,
+    loadedRepositories: [[REPO_EXAMPLE_1]],
+  },
+  bookmarkReducer: INITIAL_STATE.bookmarkReducer,
 });
 
 export const STATE_WITH_3_LOADED_REPOS = Object.freeze({
-  ...INITIAL_STATE,
-  page: 1,
-  loadedRepositories: [PAGE_EXAMPLE],
+  repositoryReducer: {
+    ...INITIAL_STATE.repositoryReducer,
+    page: 1,
+    loadedRepositories: [PAGE_EXAMPLE],
+  },
+  bookmarkReducer: INITIAL_STATE.bookmarkReducer,
 });
 
 export const STATE_WITH_DISPLAYED_REPO = Object.freeze({
-  ...INITIAL_STATE,
-  displayedRepository: REPO_EXAMPLE_1,
+  repositoryReducer: {
+    ...INITIAL_STATE.repositoryReducer,
+    displayedRepository: REPO_EXAMPLE_1,
+  },
+  bookmarkReducer: INITIAL_STATE.bookmarkReducer,
 });
 
 export const STATE_WITH_DISPLAYED_REPO_WITH_README = Object.freeze({
-  ...INITIAL_STATE,
-  displayedRepository: {
-    ...REPO_EXAMPLE_1,
-    readme: DECODED_README,
+  repositoryReducer: {
+    ...INITIAL_STATE.repositoryReducer,
+    displayedRepository: {
+      ...REPO_EXAMPLE_1,
+      readme: DECODED_README,
+    },
   },
+  bookmarkReducer: INITIAL_STATE.bookmarkReducer,
 });
 
 export const STATE_WITH_BOOKMARKED_REPOS_TO_FETCH = Object.freeze({
   ...STATE_WITH_1_LOADED_REPO,
-  bookmarkedURLs: [
-    REPO_URL_EXAMPLE_1,
-    REPO_URL_EXAMPLE_2,
-    REPO_URL_EXAMPLE_3,
-  ],
+  bookmarkReducer: {
+    ...STATE_WITH_1_LOADED_REPO.bookmarkReducer,
+    bookmarkedURLs: [
+      REPO_URL_EXAMPLE_1,
+      REPO_URL_EXAMPLE_2,
+      REPO_URL_EXAMPLE_3,
+    ],
+  },
 });
 
 export const STATE_WITH_1_LOADED_BOOKMARK = Object.freeze({
   ...STATE_WITH_1_LOADED_REPO,
-  bookmarkedURLs: [REPO_URL_EXAMPLE_1],
+  bookmarkReducer: {
+    ...STATE_WITH_1_LOADED_REPO.bookmarkReducer,
+    bookmarkedURLs: [REPO_URL_EXAMPLE_1],
+  },
 });
 
 export const STATE_WITH_BOOKMARK_NO_UPDATE_NEEDED = Object.freeze({
   ...STATE_WITH_1_LOADED_REPO,
-  bookmarkedURLs: [REPO_URL_EXAMPLE_1],
-  bookmarkedRepositories: [REPO_EXAMPLE_1],
+  bookmarkReducer: {
+    ...STATE_WITH_1_LOADED_REPO.bookmarkReducer,
+    bookmarkedURLs: [REPO_URL_EXAMPLE_1],
+    bookmarkedRepositories: [REPO_EXAMPLE_1],
+  },
 });
 
 export const STATE_WITH_1_BOOKMARKED_REPO_TO_FETCH = Object.freeze({
   ...STATE_WITH_1_LOADED_REPO,
-  bookmarkedURLs: [REPO_URL_EXAMPLE_2],
-  bookmarkedRepositories: [REPO_EXAMPLE_2],
+  bookmarkReducer: {
+    ...STATE_WITH_1_LOADED_REPO.bookmarkReducer,
+    bookmarkedURLs: [REPO_URL_EXAMPLE_2],
+    bookmarkedRepositories: [REPO_EXAMPLE_2],
+  },
 });

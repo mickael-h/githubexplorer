@@ -7,10 +7,10 @@ import { NavigationProvider } from 'react-native-navigation-hooks/dist';
 import {
   RAW_PAGE_EXAMPLE,
   STATE_WITH_1_LOADED_REPO,
+  INITIAL_STATE,
 } from '../../../../../data_examples';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import { initialState } from '../../../../../reducers/repositoryReducer';
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
@@ -29,7 +29,7 @@ describe('SearchView unit tests', () => {
     );
   });
   test('renders correctly', done => {
-    const store = mockStore({ repositoryReducer: STATE_WITH_1_LOADED_REPO });
+    const store = mockStore(STATE_WITH_1_LOADED_REPO);
     render(
       <NavigationProvider value={{ componentId: 2 }}>
         <Provider store={store}>
@@ -45,8 +45,9 @@ describe('SearchView unit tests', () => {
 
   test('renders correctly with error', done => {
     const store = mockStore({
+      ...INITIAL_STATE,
       repositoryReducer: {
-        ...initialState,
+        ...INITIAL_STATE.repositoryReducer,
         error: 'some error',
       },
     });

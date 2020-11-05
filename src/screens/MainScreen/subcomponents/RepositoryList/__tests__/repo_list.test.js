@@ -4,7 +4,6 @@ import RepositoryList from '..';
 import { Provider } from 'react-redux';
 import fetchMock from 'fetch-mock-jest';
 import {
-  EMPTY_RAW_PAGE,
   RAW_PAGE_EXAMPLE,
   STATE_WITH_3_LOADED_REPOS,
 } from '../../../../../data_examples';
@@ -41,8 +40,9 @@ describe('RepositoryList unit tests', () => {
 
   test('next page is not called if loading', () => {
     const store = mockStore({
+      ...STATE_WITH_3_LOADED_REPOS,
       repositoryReducer: {
-        ...STATE_WITH_3_LOADED_REPOS,
+        ...STATE_WITH_3_LOADED_REPOS.repositoryReducer,
         fetching: true,
       },
     });
@@ -69,9 +69,7 @@ describe('RepositoryList unit tests', () => {
       PAGE_2_URL,
       RAW_PAGE_EXAMPLE,
     );
-    const store = mockStore({
-      repositoryReducer: STATE_WITH_3_LOADED_REPOS,
-    });
+    const store = mockStore(STATE_WITH_3_LOADED_REPOS);
     const { getByTestId } = render(
       <Provider store={store}>
         <RepositoryList />
@@ -95,9 +93,7 @@ describe('RepositoryList unit tests', () => {
       PAGE_2_URL,
       RAW_PAGE_EXAMPLE,
     );
-    const store = mockStore({
-      repositoryReducer: STATE_WITH_3_LOADED_REPOS,
-    });
+    const store = mockStore(STATE_WITH_3_LOADED_REPOS);
     const { getByTestId } = render(
       <Provider store={store}>
         <RepositoryList />

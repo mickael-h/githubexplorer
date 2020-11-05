@@ -15,11 +15,11 @@ describe('BookmarksButton integration tests', () => {
       </Provider>
     );
 
-    expect(store.getState().repositoryReducer.bookmarkedURLs).toHaveLength(0);
+    expect(store.getState().bookmarkReducer.bookmarkedURLs).toHaveLength(0);
     const button = getByTestId('BookmarkButton');
     fireEvent.press(button);
-    expect(store.getState().repositoryReducer.bookmarkedURLs[0]).toEqual(REPO_URL_EXAMPLE_1);
+    expect(store.getState().bookmarkReducer.bookmarkedURLs[0]).toEqual(REPO_URL_EXAMPLE_1);
     fireEvent.press(button);
-    expect(store.getState().repositoryReducer.bookmarkedURLs).toHaveLength(0);
+    expect(store.getState().bookmarkReducer.bookmarkedURLs).toHaveLength(0);
   });
 });

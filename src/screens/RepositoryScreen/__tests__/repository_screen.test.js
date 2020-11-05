@@ -14,7 +14,7 @@ const mockStore = configureMockStore(middlewares);
 
 describe('RepositoryScreen tests', () => {
   test('renders with readme and share button works', () => {
-    const store = mockStore({ repositoryReducer: STATE_WITH_DISPLAYED_REPO_WITH_README });
+    const store = mockStore(STATE_WITH_DISPLAYED_REPO_WITH_README);
     const { getByTestId, queryByTestId } = render(
       <Provider store={store}>
         <RepositoryScreen />
@@ -32,14 +32,17 @@ describe('RepositoryScreen tests', () => {
   test('renders with no language and activity indicator', () => {
     const state = {
       ...STATE_WITH_DISPLAYED_REPO,
-      displayedRepository: {
-        ...STATE_WITH_DISPLAYED_REPO.displayedRepository,
-        fetchingReadme: true,
+      repositoryReducer: {
+        ...STATE_WITH_DISPLAYED_REPO.repositoryReducer,
+        displayedRepository: {
+          ...STATE_WITH_DISPLAYED_REPO.repositoryReducer.displayedRepository,
+          fetchingReadme: true,
+        },
       },
     };
-    delete state.displayedRepository.language;
+    delete state.repositoryReducer.displayedRepository.language;
 
-    const store = mockStore({ repositoryReducer: state });
+    const store = mockStore(state);
     const { getByTestId, queryByTestId } = render(
       <Provider store={store}>
         <RepositoryScreen />

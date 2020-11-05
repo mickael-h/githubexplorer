@@ -19,6 +19,6 @@ describe('Do a search', () => {
   test('should see new results when scrolling', async () => {
     await expect(element(by.id('SearchView'))).toBeVisible();
     await waitFor(element(by.id('RepoItem:torvalds/linux'))).toBeVisible()
-      .whileElement(by.id('RepositoryList')).scroll(1000, 'down');
+      .whileElement(by.id('RepositoryList')).scroll(500, 'down');
   });
 });

@@ -14,19 +14,19 @@ export const searchErrorMessage = state =>
   state.repositoryReducer.error;
 
 export const isFetchingBookmarks = state =>
-  state.repositoryReducer.fetchingBookmarks;
+  state.bookmarkReducer.fetching;
 
 export const hasBookmarksError = state =>
-  state.repositoryReducer.bookmarkError != null;
+  state.bookmarkReducer.error != null;
 
 export const getLoadedRepositories = state =>
   state.repositoryReducer.loadedRepositories;
 
 export const getBookmarkedURLs = state =>
-  state.repositoryReducer.bookmarkedURLs;
+  state.bookmarkReducer.bookmarkedURLs;
 
 export const getBookmarkedRepositories = state =>
-  state.repositoryReducer.bookmarkedRepositories;
+  state.bookmarkReducer.bookmarkedRepositories;
 
 export const getDisplayedRepository = state =>
   state.repositoryReducer.displayedRepository;
