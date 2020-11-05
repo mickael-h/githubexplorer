@@ -7,7 +7,7 @@ import { NavigationProvider } from 'react-native-navigation-hooks/dist';
 import {
   RAW_PAGE_EXAMPLE,
   STATE_WITH_1_LOADED_REPO,
-} from '../../../../../data_examples/data_examples';
+} from '../../../../../data_examples';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { initialState } from '../../../../../reducers/repositoryReducer';

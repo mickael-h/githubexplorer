@@ -3,7 +3,7 @@ import { render, fireEvent } from '@testing-library/react-native';
 import RepositoryItem from '..';
 import { configureStoreNoLogs } from '../../../../../store';
 import { Provider } from 'react-redux';
-import { REPO_EXAMPLE_1 } from '../../../../../data_examples/data_examples';
+import { REPO_EXAMPLE_1 } from '../../../../../data_examples';
 import { NavigationProvider } from 'react-native-navigation-hooks/dist';
 import { useNavigation } from 'react-native-navigation-hooks';
 jest.mock('react-native-navigation-hooks');

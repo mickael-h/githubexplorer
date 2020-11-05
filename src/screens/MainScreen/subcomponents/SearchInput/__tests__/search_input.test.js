@@ -4,7 +4,7 @@ import SearchInput from '..';
 import { Provider } from 'react-redux';
 import fetchMock from 'fetch-mock-jest';
 import { configureStoreNoLogs } from '../../../../../store';
-import { RAW_PAGE_EXAMPLE } from '../../../../../data_examples/data_examples';
+import { RAW_PAGE_EXAMPLE } from '../../../../../data_examples';
 import texts from '../../../../../texts';
 import { useDebounce } from 'use-debounce/lib';
 jest.mock('use-debounce/lib');

@@ -47,7 +47,7 @@ import {
   STATE_WITH_1_LOADED_BOOKMARK,
   STATE_WITH_1_BOOKMARKED_REPO_TO_FETCH,
   STATE_WITH_BOOKMARK_NO_UPDATE_NEEDED,
-} from '../../data_examples/data_examples';
+} from '../../data_examples';
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);

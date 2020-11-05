@@ -8,7 +8,7 @@ import thunk from 'redux-thunk';
 import {
   REPO_EXAMPLE_1,
   STATE_WITH_BOOKMARK_NO_UPDATE_NEEDED,
-} from '../../../../../data_examples/data_examples';
+} from '../../../../../data_examples';
 import { NavigationProvider } from 'react-native-navigation-hooks/dist';
 import { initialState } from '../../../../../reducers/repositoryReducer';
 import texts from '../../../../../texts';

@@ -4,7 +4,7 @@ import BookmarksList from '..';
 import { Provider } from 'react-redux';
 import {
   STATE_WITH_BOOKMARK_NO_UPDATE_NEEDED,
-} from '../../../../../data_examples/data_examples';
+} from '../../../../../data_examples';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { useNavigation } from 'react-native-navigation-hooks';

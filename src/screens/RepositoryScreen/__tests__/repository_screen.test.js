@@ -7,7 +7,7 @@ import { Provider } from 'react-redux';
 import {
   STATE_WITH_DISPLAYED_REPO,
   STATE_WITH_DISPLAYED_REPO_WITH_README,
-} from '../../../data_examples/data_examples';
+} from '../../../data_examples';
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);

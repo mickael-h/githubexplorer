@@ -5,7 +5,7 @@ import fetchMock from 'fetch-mock-jest';
 import { configureStoreNoLogs } from '../../../store';
 import { Provider } from 'react-redux';
 import { NavigationProvider } from 'react-native-navigation-hooks/dist';
-import { RAW_PAGE_EXAMPLE } from '../../../data_examples/data_examples';
+import { RAW_PAGE_EXAMPLE } from '../../../data_examples';
 
 const store = configureStoreNoLogs();
 

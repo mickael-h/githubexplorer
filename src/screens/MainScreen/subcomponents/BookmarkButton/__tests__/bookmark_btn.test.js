@@ -3,7 +3,7 @@ import { render, fireEvent } from '@testing-library/react-native';
 import BookmarksButton from '..';
 import { configureStoreNoLogs } from '../../../../../store';
 import { Provider } from 'react-redux';
-import { REPO_URL_EXAMPLE_1 } from '../../../../../data_examples/data_examples';
+import { REPO_URL_EXAMPLE_1 } from '../../../../../data_examples';
 
 const store = configureStoreNoLogs();
 

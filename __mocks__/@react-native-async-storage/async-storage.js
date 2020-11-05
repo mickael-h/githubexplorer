@@ -3,7 +3,7 @@ import {
   REPO_URL_EXAMPLE_1,
   REPO_URL_EXAMPLE_2,
   REPO_URL_EXAMPLE_3,
-} from '../../src/data_examples/data_examples';
+} from '../../src/data_examples';
 
 AsyncStorageMock.getItem = jest.fn(async (key, callback) => {
   let result;

@@ -7,7 +7,7 @@ import {
   EMPTY_RAW_PAGE,
   RAW_PAGE_EXAMPLE,
   STATE_WITH_3_LOADED_REPOS,
-} from '../../../../../data_examples/data_examples';
+} from '../../../../../data_examples';
 import { responsiveHeight } from 'react-native-responsive-dimensions';
 import { useNavigation } from 'react-native-navigation-hooks';
 
