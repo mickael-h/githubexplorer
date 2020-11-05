@@ -3,7 +3,7 @@ This was fun to make. You can search for repositories, bookmark them, and check 
 Search results will automatically update as you scroll through them.
 
 When the readme is big, rendering the preview screen can take a lot of time.
-This might be a good opportunity to try React's experimental concurrent mode.
+This might be a good opportunity to try React's experimental concurrent mode... when it's available for React Native.
 
 The code should be clean and self-explanatory. Classes, functions, and lines are kept short to ensure legibility.
 I use SonarLint to ensure code consistency and cleanliness.
@@ -19,9 +19,7 @@ I used React Native Navigation, which is definitely better for performance, but 
 
 ## Unit / integration tests results
 A good app is a well-tested app :)
-Not everything is represented in there though: I had to mock my entire Share wrapper to avoid some problems where it's used.
-It's a neat little module, but like most native modules, implementing it complexifies testing.
-![Test Results](https://i.imgur.com/Eea6UHo.png "All clear!")
+![Test Results](https://i.imgur.com/8uegaPn.png "All clear!")
 ![Satisfaction](https://i.imgur.com/cLLOVbb.png "Feels good")
 
 ## End-to-end tests
@@ -42,6 +40,7 @@ I added 2 Detox scenarios :
 
 ## Other things to do
 - Optimize rendering :heavy_check_mark:
+- Fixing testing the RNShare wrapper :heavy_check_mark:
 - Split the store's tests into several files
 - Figure out why the SearchView makes a weird "act" warning in Jest
-- Optimize rendering even more
+- Optimize rendering even more (still running slow on lower end devices)
