@@ -41,6 +41,6 @@ I added 2 Detox scenarios :
 ## Other things to do
 - Optimize rendering :heavy_check_mark:
 - Fixing testing the RNShare wrapper :heavy_check_mark:
-- Split the store's tests into several files
+- Split the store's tests into several files :heavy_check_mark:
 - Figure out why the SearchView makes a weird "act" warning in Jest
 - Optimize rendering even more (still running slow on lower end devices)
