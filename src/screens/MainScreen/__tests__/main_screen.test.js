@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react-native';
+import { render, fireEvent, act } from '@testing-library/react-native';
 import MainScreen from '..';
 import fetchMock from 'fetch-mock-jest';
 import { configureStoreNoLogs } from '../../../store';
@@ -12,17 +12,21 @@ const store = configureStoreNoLogs();
 // TODO: fix the weird "act" warning for SearchView
 
 describe('MainScreen unit tests', () => {
+
   afterEach(() => {
     fetchMock.restore();
   });
+
   beforeEach(() => {
+    jest.useFakeTimers();
     fetchMock.mock();
     fetchMock.get(
       'https://api.github.com/search/repositories?page=1&q=stars%3A%3E%3D1000&sort=stars',
       RAW_PAGE_EXAMPLE,
     );
   });
-  test('renders correctly', async done => {
+
+  test('renders correctly', () => {
     const { getByTestId } = render(
       <NavigationProvider value={{ componentId: 2 }}>
         <Provider store={store}>
@@ -30,6 +34,8 @@ describe('MainScreen unit tests', () => {
         </Provider>
       </NavigationProvider>
     );
+
+    act(() => jest.advanceTimersByTime(2000));
 
     let button = getByTestId('FloatingButton');
     const getIconProps = btn => btn.children[0].props.children.props;
@@ -42,10 +48,5 @@ describe('MainScreen unit tests', () => {
     fireEvent.press(button);
     button = getByTestId('FloatingButton');
     expect(getIconProps(button).name).toEqual('favorite');
-
-    // Because of useDebounce in SearchInput. Mocking doesn't work here.
-    setTimeout(() => {
-      done();
-    }, 1100);
   });
 });

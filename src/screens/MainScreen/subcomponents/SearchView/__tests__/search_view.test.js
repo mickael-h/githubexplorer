@@ -15,20 +15,22 @@ import thunk from 'redux-thunk';
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 
-// TODO: fix the weird "act" warning
-
 describe('SearchView unit tests', () => {
+
   afterEach(() => {
     fetchMock.restore();
   });
+
   beforeEach(() => {
+    jest.useFakeTimers();
     fetchMock.mock();
     fetchMock.get(
       'https://api.github.com/search/repositories?page=1&q=stars%3A%3E%3D1000&sort=stars',
       RAW_PAGE_EXAMPLE,
     );
   });
-  test('renders correctly', done => {
+
+  test('renders correctly', () => {
     const store = mockStore(STATE_WITH_1_LOADED_REPO);
     render(
       <NavigationProvider value={{ componentId: 2 }}>
@@ -37,13 +39,9 @@ describe('SearchView unit tests', () => {
         </Provider>
       </NavigationProvider>
     );
-    // Because of useDebounce in SearchInput. Mocking doesn't work.
-    setTimeout(() => {
-      done();
-    }, 1100);
   });
 
-  test('renders correctly with error', done => {
+  test('renders correctly with error', () => {
     const store = mockStore({
       ...INITIAL_STATE,
       repositoryReducer: {
@@ -58,9 +56,5 @@ describe('SearchView unit tests', () => {
         </Provider>
       </NavigationProvider>
     );
-    // Because of useDebounce in SearchInput. Mocking doesn't work.
-    setTimeout(() => {
-      done();
-    }, 1100);
   });
 });
