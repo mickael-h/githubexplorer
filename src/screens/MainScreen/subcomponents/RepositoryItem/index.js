@@ -3,7 +3,7 @@ import { Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from 'react-native-navigation-hooks';
 import style from './style';
 import { useDispatch } from 'react-redux';
-import { setDisplayedRepo } from '../../../../actions/repository';
+import { setDisplayedRepo } from '../../../../actions/repositoryActions';
 import StarCounter from '../../../../components/StarCounter';
 import LanguageLabel from '../../../../components/LanguageLabel';
 import BookmarkButton from '../BookmarkButton';

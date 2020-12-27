@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { FlatList } from 'react-native';
 import { responsiveHeight } from 'react-native-responsive-dimensions';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchPageIfNeeded } from '../../../../actions/repository';
+import { fetchPageIfNeeded } from '../../../../actions/repositoryActions';
 import {
   getLoadedRepositories,
   isFetchingSearch,

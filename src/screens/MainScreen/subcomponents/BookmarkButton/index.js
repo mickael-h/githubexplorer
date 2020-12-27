@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   bookmarkRepo,
   removeBookmark,
-} from '../../../../actions/repository';
+} from '../../../../actions/bookmarkActions';
 import { getBookmarkedURLs } from '../../../../selectors';
 
 const BookmarkButton = ({ url, style }) => {

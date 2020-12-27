@@ -18,7 +18,7 @@ import {
 import {
   setDisplayedRepo,
   fetchPageIfNeeded,
-} from '../../actions/repository';
+} from '../../actions/repositoryActions';
 import {
   STATE_WITH_DISPLAYED_REPO,
   REPO_URL_EXAMPLE_1,

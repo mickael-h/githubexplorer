@@ -13,7 +13,7 @@ import {
   removeBookmark,
   fetchBookmarksIfNeeded,
   loadBookmarks,
-} from '../../actions/repository';
+} from '../../actions/bookmarkActions';
 import {
   REPO_URL_EXAMPLE_1,
   REPO_URL_EXAMPLE_2,

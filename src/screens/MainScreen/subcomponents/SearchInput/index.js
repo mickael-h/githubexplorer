@@ -3,7 +3,7 @@ import { Icon, Input } from 'react-native-elements';
 import { useDebounce } from 'use-debounce/lib';
 import style from './style';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchPageIfNeeded, } from '../../../../actions/repository';
+import { fetchPageIfNeeded, } from '../../../../actions/repositoryActions';
 import { getQuery } from '../../../../selectors';
 import texts from '../../../../texts';
 

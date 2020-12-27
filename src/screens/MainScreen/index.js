@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { fetchBookmarksIfNeeded, loadBookmarks } from '../../actions/repository';
+import { fetchBookmarksIfNeeded, loadBookmarks } from '../../actions/bookmarkActions';
 import texts from '../../texts';
 import BookmarksView from './subcomponents/BookmarksView';
 import SearchView from './subcomponents/SearchView';
