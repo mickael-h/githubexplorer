@@ -1,4 +1,3 @@
-import thunk from 'redux-thunk';
 import localeReducer, { initialState } from '../localeReducer';
 import {
   initLanguage,
@@ -7,8 +6,6 @@ import {
 
 const texts_fr = require('../../texts/texts-fr');
 const texts_en = require('../../texts/texts-en');
-
-const middlewares = [thunk];
 
 describe('sync unit tests', () => {
   test('set language', () => {
