@@ -1,0 +1,8 @@
+{
+  "no_bookmarks": "Vous n'avez pas encore de favoris!",
+  "bookmarks_error": "Une erreur est survenue durant le chargement des favoris.",
+  "placeholder_search": "Rechercher",
+  "search_error": "Votre recherche a retourné une erreur.",
+  "search_empty": "Votre recherche n'a retourné aucun résultat.",
+  "repos_title": "Répertoires"
+}

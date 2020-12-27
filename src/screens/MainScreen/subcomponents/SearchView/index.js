@@ -8,13 +8,14 @@ import {
   isFetchingSearch,
   hasSearchError,
   searchErrorMessage,
+  getTexts,
 } from '../../../../selectors';
 import SearchInput from '../SearchInput';
 import FillerMessage from '../FillerMessage';
 import RepositoryList from '../RepositoryList';
-import texts from '../../../../texts';
 
 const SearchView = ({ toggleFilter }) => {
+  const texts = useSelector(getTexts);
   const loadedRepos = useSelector(getLoadedRepositories);
   const loading = useSelector(isFetchingSearch);
   const error = useSelector(hasSearchError);

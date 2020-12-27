@@ -11,9 +11,10 @@ import {
   INITIAL_STATE,
 } from '../../../../../data_examples';
 import { NavigationProvider } from 'react-native-navigation-hooks/dist';
-import texts from '../../../../../texts';
+
 
 const middlewares = [thunk];
+const texts = require('../../../../../texts/texts-en');
 const mockStore = configureMockStore(middlewares);
 
 describe('BookmarksView unit tests', () => {

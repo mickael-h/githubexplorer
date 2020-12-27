@@ -5,7 +5,6 @@ import { Provider } from 'react-redux';
 import fetchMock from 'fetch-mock-jest';
 import { configureStoreNoLogs } from '../../../../../store';
 import { RAW_PAGE_EXAMPLE } from '../../../../../data_examples';
-import texts from '../../../../../texts';
 import { useDebounce } from 'use-debounce/lib';
 jest.mock('use-debounce/lib');
 
@@ -32,7 +31,7 @@ describe('SearchInput integration tests', () => {
     );
   });
   test('renders correctly', () => {
-    const { getByPlaceholderText, getByTestId } = render(
+    const { getByTestId } = render(
       <Provider store={store}>
         <SearchInput />
       </Provider>
@@ -40,7 +39,7 @@ describe('SearchInput integration tests', () => {
 
 
     useDebounce.mockReturnValue(['search_terms']);
-    const input = getByPlaceholderText(texts.placeholder_search);
+    const input = getByTestId('SearchInput');
     fireEvent.changeText(input, 'search_terms');
     expect(store.getState().repositoryReducer.query).toEqual('search_terms');
 

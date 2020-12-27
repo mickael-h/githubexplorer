@@ -30,3 +30,6 @@ export const getBookmarkedRepositories = state =>
 
 export const getDisplayedRepository = state =>
   state.repositoryReducer.displayedRepository;
+
+export const getTexts = state =>
+  state.localeReducer.texts;

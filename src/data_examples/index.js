@@ -1,6 +1,8 @@
 import { decode as decodeB64 } from 'base-64';
 import { decode as decodeUTF8 } from 'utf8';
 
+const texts = require('../texts/texts-en');
+
 export const INITIAL_STATE = {
   repositoryReducer: {
     displayedRepository: {},
@@ -17,6 +19,9 @@ export const INITIAL_STATE = {
     error: null,
     fetching: false,
   },
+  localeReducer: {
+    texts,
+  }
 };
 
 export const REPO_URL_EXAMPLE_1 = 'https://api.github.com/repos/mickael-h/colorpicker';
@@ -113,6 +118,7 @@ export const STATE_WITH_1_LOADED_REPO = Object.freeze({
     loadedRepositories: [[REPO_EXAMPLE_1]],
   },
   bookmarkReducer: INITIAL_STATE.bookmarkReducer,
+  localeReducer: INITIAL_STATE.localeReducer,
 });
 
 export const STATE_WITH_3_LOADED_REPOS = Object.freeze({
@@ -122,6 +128,7 @@ export const STATE_WITH_3_LOADED_REPOS = Object.freeze({
     loadedRepositories: [PAGE_EXAMPLE],
   },
   bookmarkReducer: INITIAL_STATE.bookmarkReducer,
+  localeReducer: INITIAL_STATE.localeReducer,
 });
 
 export const STATE_WITH_DISPLAYED_REPO = Object.freeze({
@@ -130,6 +137,7 @@ export const STATE_WITH_DISPLAYED_REPO = Object.freeze({
     displayedRepository: REPO_EXAMPLE_1,
   },
   bookmarkReducer: INITIAL_STATE.bookmarkReducer,
+  localeReducer: INITIAL_STATE.localeReducer,
 });
 
 export const STATE_WITH_DISPLAYED_REPO_WITH_README = Object.freeze({
@@ -141,6 +149,7 @@ export const STATE_WITH_DISPLAYED_REPO_WITH_README = Object.freeze({
     },
   },
   bookmarkReducer: INITIAL_STATE.bookmarkReducer,
+  localeReducer: INITIAL_STATE.localeReducer,
 });
 
 export const STATE_WITH_BOOKMARKED_REPOS_TO_FETCH = Object.freeze({

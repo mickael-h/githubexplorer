@@ -30,7 +30,7 @@ I added 2 Detox scenarios :
 
 ## Features ideas (for later)
 - AsyncStorage to keep bookmarks :heavy_check_mark:
-- Localization
+- Localization :heavy_check_mark:
 - Sharing to contacts
 - Add more information to the preview screen top card
 - Tabs on the preview screen to also see pull requests and issues

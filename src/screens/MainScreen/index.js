@@ -1,15 +1,29 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { Navigation } from 'react-native-navigation';
+import { useDispatch, useSelector } from 'react-redux';
 import { fetchBookmarksIfNeeded, loadBookmarks } from '../../actions/bookmarkActions';
-import texts from '../../texts';
+import { initLanguage } from '../../actions/localeActions';
+import { getTexts } from '../../selectors';
 import BookmarksView from './subcomponents/BookmarksView';
 import SearchView from './subcomponents/SearchView';
 
-const MainScreen = () => {
+const MainScreen = props => {
+  const texts = useSelector(getTexts);
   const dispatch = useDispatch();
   const [filterBookmarks, setFilterBookmarks] = useState(false);
 
   useEffect(() => {
+    Navigation.mergeOptions(props.componentId, {
+      topBar: {
+        title: {
+          text: texts.repos_title,
+        },
+      },
+    });
+  }, [texts]);
+
+  useEffect(() => {
+    dispatch(initLanguage());
     dispatch(loadBookmarks('github_bookmarks'));
   }, []);
 
@@ -28,9 +42,6 @@ const MainScreen = () => {
 
 MainScreen.options = {
   topBar: {
-    title: {
-      text: texts.repos_title,
-    },
     background: {
       color: '#BBBBFF',
     },

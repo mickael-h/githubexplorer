@@ -4,11 +4,14 @@ import { useDebounce } from 'use-debounce/lib';
 import style from './style';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchPageIfNeeded, } from '../../../../actions/repositoryActions';
-import { getQuery } from '../../../../selectors';
-import texts from '../../../../texts';
+import {
+  getQuery,
+  getTexts,
+} from '../../../../selectors';
 
 const SearchInput = () => {
   const query = useSelector(getQuery);
+  const texts = useSelector(getTexts);
   const [searchQuery, setSearchQuery] = useState(query);
   const [debouncedQuery] = useDebounce(searchQuery, 1000);
   const dispatch = useDispatch();

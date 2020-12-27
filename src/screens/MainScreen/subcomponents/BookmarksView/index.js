@@ -7,13 +7,14 @@ import {
   getBookmarkedURLs,
   isFetchingBookmarks,
   hasBookmarksError,
+  getTexts,
 } from '../../../../selectors';
 import BookmarkList from '../BookmarkList';
 import FillerMessage from '../FillerMessage';
-import texts from '../../../../texts';
 
 const BookmarksView = ({ toggleFilter }) => {
   const showLoading = useSelector(isFetchingBookmarks);
+  const texts = useSelector(getTexts);
   const error = useSelector(hasBookmarksError);
   const bookmarkURLs = useSelector(getBookmarkedURLs);
   const showNoBookmarks = bookmarkURLs.length == 0 && !showLoading && !error;
