@@ -1,4 +1,3 @@
-import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import localeReducer, { initialState } from '../localeReducer';
 import {
@@ -10,7 +9,6 @@ const texts_fr = require('../../texts/texts-fr');
 const texts_en = require('../../texts/texts-en');
 
 const middlewares = [thunk];
-const mockStore = configureMockStore(middlewares);
 
 describe('sync unit tests', () => {
   test('set language', () => {
