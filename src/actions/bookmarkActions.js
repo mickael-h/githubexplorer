@@ -6,7 +6,7 @@ import {
   UPDATE_BOOKMARKS,
   REQUEST_BOOKMARKS,
   RECEIVE_BOOKMARKS,
-  ADD_STORED_BOOKMARKS,
+  ADD_STORED_BOOKMARKS
 } from './types';
 
 export const bookmarkRepo = url => ({

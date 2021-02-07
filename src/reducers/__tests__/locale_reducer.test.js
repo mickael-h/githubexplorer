@@ -1,7 +1,7 @@
 import localeReducer, { initialState } from '../localeReducer';
 import {
   initLanguage,
-  setLanguage,
+  setLanguage
 } from '../../actions/localeActions';
 
 const texts_fr = require('../../texts/texts-fr');
