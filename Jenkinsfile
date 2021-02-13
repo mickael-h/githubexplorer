@@ -1,5 +1,5 @@
 pipeline {
-  agent { docker { image 'reactnativecommunity/react-native-android' } }
+  agent { docker { image 'node:14-alpine' } }
   stages {
     stage('test') {
       steps {
