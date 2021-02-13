@@ -3,6 +3,7 @@ pipeline {
   stages {
     stage('test') {
       steps {
+        sh 'npm i'
         sh 'npm test:jenkins'
       }
     }
