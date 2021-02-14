@@ -12,12 +12,12 @@ pipeline {
     }
     stage('test') {
       steps {
-        sh 'npm test:jenkins'
+        sh 'npm run test:jenkins'
       }
     }
     stage('build') {
       steps {
-        sh 'npm android-bundle-release'
+        sh 'npm run android-bundle-release'
       }
     }
   }
