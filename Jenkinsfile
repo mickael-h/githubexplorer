@@ -1,15 +1,19 @@
 pipeline {
   agent any
   stages {
+    stage('init') {
+        sh 'sudo apt install curl'
+        sh 'curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash '
+        sh 'nvm install 15.2.1'
+        sh 'npm i'
+    }
     stage('test') {
       steps {
-        sh 'npm i'
         sh 'npm test:jenkins'
       }
     }
     stage('build') {
       steps {
-        sh 'npm i'
         sh 'npm android-bundle-release'
       }
     }
