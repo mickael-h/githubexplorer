@@ -1,10 +1,12 @@
 pipeline {
-  agent {
-    docker { image 'node:14-alpine' }
-  }
+  agent any
   stages {
     stage('init') {
       steps {
+        sh 'curl -sL https://deb.nodesource.com/setup_15.2.1 -o nodesource_setup.sh'
+        sh 'sudo bash nodesource_setup.sh'
+        sh 'sudo apt install nodejs'
+        sh 'node -v'
         sh 'npm i'
       }
     }
