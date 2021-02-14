@@ -4,7 +4,7 @@ pipeline {
     stage('init') {
       steps {
         sh 'curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash '
-        sh 'export NVM_DIR="$HOME/.nvm" && [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"'
+        sh 'export NVM_DIR="$HOME/.nvm" && [ -s "$NVM_DIR/nvm.sh" ] && ./$NVM_DIR/nvm.sh'
         sh 'nvm install 15.2.1'
         sh 'npm i'
       }
