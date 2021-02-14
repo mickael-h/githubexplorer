@@ -11,10 +11,11 @@ pipeline {
         sh 'unzip commandlinetools-linux-6858069_latest.zip'
         sh 'rm commandlinetools-linux-6858069_latest.zip'
         sh 'mkdir sdk'
-        sh './cmdline-tools/bin/sdkmanager "platform-tools" "platforms;android-28" "platforms;android-29" --sdk_root="./sdk"'
-        sh 'export JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64"'
-        sh 'export ANDROID_SDK_ROOT="$HOME/sdk"'
-        sh 'export PATH="$PATH:$ANDROID_SDK_ROOT/platform-tools"'
+        sh 'echo yes | ./cmdline-tools/bin/sdkmanager "platform-tools" --sdk_root="$HOME/sdk"'
+        sh 'echo yes | ./cmdline-tools/bin/sdkmanager "platforms;android-29" --sdk_root="$HOME/sdk"'
+        sh 'echo yes | ./cmdline-tools/bin/sdkmanager "platforms;android-28" --sdk_root="$HOME/sdk"'
+        sh 'echo yes | ./cmdline-tools/bin/sdkmanager "build-tools;28.0.3" --sdk_root="$HOME/sdk"'
+        sh 'echo yes | ./cmdline-tools/bin/sdkmanager "build-tools;29.0.2" --sdk_root="$HOME/sdk"'
         sh 'npm i'
       }
     }
@@ -25,7 +26,15 @@ pipeline {
     }
     stage('build') {
       steps {
-        sh 'npm run android-bundle-release'
+        withEnv([
+          'PATH+=/var/lib/jenkins/sdk/platform-tools',
+          'JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64',
+          'ANDROID_SDK_ROOT=/var/lib/jenkins/sdk'
+        ]) {
+          echo "$ANDROID_SDK_ROOT"
+          sh "ls $ANDROID_SDK_ROOT"
+          sh 'npm run android-bundle-release'
+        }
       }
     }
   }
