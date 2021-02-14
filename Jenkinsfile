@@ -3,7 +3,6 @@ pipeline {
   stages {
     stage('init') {
       steps {
-        sh 'sudo apt install curl'
         sh 'curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash '
         sh 'nvm install 15.2.1'
         sh 'npm i'
