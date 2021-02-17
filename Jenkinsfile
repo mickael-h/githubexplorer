@@ -6,7 +6,7 @@ pipeline {
         sh 'sudo apt install curl'
         sh 'curl -sL https://deb.nodesource.com/setup_10.x -o nodesource_setup.sh'
         sh 'sudo bash nodesource_setup.sh'
-        sh 'sudo apt install openjdk-11-jdk openjdk-11-jre unzip -y'
+        sh 'sudo apt install nodejs openjdk-11-jdk openjdk-11-jre unzip -y'
         sh 'node -v'
         sh 'wget https://dl.google.com/android/repository/commandlinetools-linux-6858069_latest.zip'
         sh 'unzip commandlinetools-linux-6858069_latest.zip'
