@@ -5,7 +5,7 @@ pipeline {
       steps {
         sh 'sudo apt install curl'
         sh 'curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash'
-        sh 'source ~/.profile'
+        sh '. ~/.profile'
         sh 'nvm install 10'
         sh 'curl -sL https://deb.nodesource.com/setup_10.x -o nodesource_setup.sh'
         sh 'sudo bash nodesource_setup.sh'
