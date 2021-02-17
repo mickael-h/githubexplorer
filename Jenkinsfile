@@ -4,9 +4,6 @@ pipeline {
     stage('init') {
       steps {
         sh 'sudo apt install curl'
-        sh 'curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash'
-        sh '. ~/.profile'
-        sh 'nvm install 10'
         sh 'curl -sL https://deb.nodesource.com/setup_10.x -o nodesource_setup.sh'
         sh 'sudo bash nodesource_setup.sh'
         sh 'sudo apt install openjdk-11-jdk openjdk-11-jre unzip -y'
