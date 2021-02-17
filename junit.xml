@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="57" failures="0" errors="0" time="9.376">
+  <testsuite name="src/reducers/__tests__/locale_reducer.test.js" errors="0" failures="0" skipped="0" timestamp="2021-02-17T00:16:36" time="3.973" tests="2">
+    <testcase classname="sync unit tests - set language" name="sync unit tests - set language" time="0.005">
+    </testcase>
+    <testcase classname="sync unit tests - init language" name="sync unit tests - init language" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="src/screens/RepositoryScreen/subcomponents/__tests__/markdown.test.js" errors="0" failures="0" skipped="0" timestamp="2021-02-17T00:16:36" time="5.626" tests="2">
+    <testcase classname="MardownView tests - renders" name="MardownView tests - renders" time="0.202">
+    </testcase>
+    <testcase classname="MardownView tests - isUrl works" name="MardownView tests - isUrl works" time="0.003">
+    </testcase>
+  </testsuite>
+  <testsuite name="src/components/ScreenWrapper/__tests__/screen_wrapper.test.js" errors="0" failures="0" skipped="0" timestamp="2021-02-17T00:16:40" time="1.69" tests="1">
+    <testcase classname="ScreenWrapper unit tests - Renders correctly" name="ScreenWrapper unit tests - Renders correctly" time="0.314">
+    </testcase>
+  </testsuite>
+  <testsuite name="src/reducers/__tests__/bookmark_reducer.test.js" errors="0" failures="0" skipped="0" timestamp="2021-02-17T00:16:42" time="0.738" tests="13">
+    <testcase classname="sync unit tests - add bookmark" name="sync unit tests - add bookmark" time="0.002">
+    </testcase>
+    <testcase classname="sync unit tests - remove bookmark" name="sync unit tests - remove bookmark" time="0.002">
+    </testcase>
+    <testcase classname="sync unit tests - wrong action and undefined state" name="sync unit tests - wrong action and undefined state" time="0.001">
+    </testcase>
+    <testcase classname="fetch bookmarks async unit tests - load 3 bookmarks from storage dispatch" name="fetch bookmarks async unit tests - load 3 bookmarks from storage dispatch" time="0.004">
+    </testcase>
+    <testcase classname="fetch bookmarks async unit tests - load 3 bookmarks from storage actions" name="fetch bookmarks async unit tests - load 3 bookmarks from storage actions" time="0.02">
+    </testcase>
+    <testcase classname="fetch bookmarks async unit tests - get bookmarked repositories dispatch" name="fetch bookmarks async unit tests - get bookmarked repositories dispatch" time="0.022">
+    </testcase>
+    <testcase classname="fetch bookmarks async unit tests - get bookmarks already loaded dispatch 1" name="fetch bookmarks async unit tests - get bookmarks already loaded dispatch 1" time="0.001">
+    </testcase>
+    <testcase classname="fetch bookmarks async unit tests - get bookmarks already loaded dispatch 2" name="fetch bookmarks async unit tests - get bookmarks already loaded dispatch 2" time="0.001">
+    </testcase>
+    <testcase classname="fetch bookmarks async unit tests - get bookmarks already loaded dispatch 3" name="fetch bookmarks async unit tests - get bookmarks already loaded dispatch 3" time="0.001">
+    </testcase>
+    <testcase classname="fetch bookmarks async unit tests - get bookmarked repositories actions" name="fetch bookmarks async unit tests - get bookmarked repositories actions" time="0.003">
+    </testcase>
+    <testcase classname="fetch bookmarks async unit tests - get bookmarks and receive unbookmarked repos action" name="fetch bookmarks async unit tests - get bookmarks and receive unbookmarked repos action" time="0">
+    </testcase>
+    <testcase classname="fetch bookmarks async unit tests - get bookmarked repositories actions with errors" name="fetch bookmarks async unit tests - get bookmarked repositories actions with errors" time="0">
+    </testcase>
+    <testcase classname="fetch bookmarks async unit tests - get bookmarked repositories dispatch with errors" name="fetch bookmarks async unit tests - get bookmarked repositories dispatch with errors" time="0.009">
+    </testcase>
+  </testsuite>
+  <testsuite name="src/reducers/__tests__/repository_reducer.test.js" errors="0" failures="0" skipped="0" timestamp="2021-02-17T00:16:42" time="0.889" tests="17">
+    <testcase classname="sync unit tests - wrong action and undefined state" name="sync unit tests - wrong action and undefined state" time="0.001">
+    </testcase>
+    <testcase classname="select repo async unit tests - select repository dispatch with readme" name="select repo async unit tests - select repository dispatch with readme" time="0.021">
+    </testcase>
+    <testcase classname="select repo async unit tests - select repository dispatch with raw readme" name="select repo async unit tests - select repository dispatch with raw readme" time="0.005">
+    </testcase>
+    <testcase classname="select repo async unit tests - reselect same repository dispatch" name="select repo async unit tests - reselect same repository dispatch" time="0.002">
+    </testcase>
+    <testcase classname="select repo async unit tests - select repository actions with readme" name="select repo async unit tests - select repository actions with readme" time="0.002">
+    </testcase>
+    <testcase classname="select repo async unit tests - select repository actions with unexpected readme" name="select repo async unit tests - select repository actions with unexpected readme" time="0.001">
+    </testcase>
+    <testcase classname="select repo async unit tests - select repository dispatch without readme" name="select repo async unit tests - select repository dispatch without readme" time="0.006">
+    </testcase>
+    <testcase classname="select repo async unit tests - select repository actions without readme" name="select repo async unit tests - select repository actions without readme" time="0.002">
+    </testcase>
+    <testcase classname="all most starred async unit tests - get all most starred dispatch with results" name="all most starred async unit tests - get all most starred dispatch with results" time="0.009">
+    </testcase>
+    <testcase classname="all most starred async unit tests - unneeded fetch dispatch" name="all most starred async unit tests - unneeded fetch dispatch" time="0">
+    </testcase>
+    <testcase classname="all most starred async unit tests - get all most starred actions with results" name="all most starred async unit tests - get all most starred actions with results" time="0.002">
+    </testcase>
+    <testcase classname="search async unit tests - search dispatch with errors" name="search async unit tests - search dispatch with errors" time="0.006">
+    </testcase>
+    <testcase classname="search async unit tests - search dispatch with API limit reached" name="search async unit tests - search dispatch with API limit reached" time="0.005">
+    </testcase>
+    <testcase classname="search async unit tests - search receive page action with errors" name="search async unit tests - search receive page action with errors" time="0.001">
+    </testcase>
+    <testcase classname="search async unit tests - search most starred dispatch without results" name="search async unit tests - search most starred dispatch without results" time="0.011">
+    </testcase>
+    <testcase classname="search async unit tests - search receive page action for old query" name="search async unit tests - search receive page action for old query" time="0.001">
+    </testcase>
+    <testcase classname="search async unit tests - search most starred actions without results" name="search async unit tests - search most starred actions without results" time="0.016">
+    </testcase>
+  </testsuite>
+  <testsuite name="src/components/FloatingButton/__tests__/floating_button.test.js" errors="0" failures="0" skipped="0" timestamp="2021-02-17T00:16:36" time="6.913" tests="1">
+    <testcase classname="FloatingButton unit tests - When I press the button, the callback is called" name="FloatingButton unit tests - When I press the button, the callback is called" time="0.033">
+    </testcase>
+  </testsuite>
+  <testsuite name="src/screens/MainScreen/subcomponents/BookmarkButton/__tests__/bookmark_btn.test.js" errors="0" failures="0" skipped="0" timestamp="2021-02-17T00:16:36" time="6.9" tests="1">
+    <testcase classname="BookmarksButton integration tests - creates and removes a bookmark" name="BookmarksButton integration tests - creates and removes a bookmark" time="0.047">
+    </testcase>
+  </testsuite>
+  <testsuite name="src/components/LanguageLabel/__tests__/language_label.test.js" errors="0" failures="0" skipped="0" timestamp="2021-02-17T00:16:36" time="6.92" tests="1">
+    <testcase classname="LanguageLabel unit tests - Renders correctly" name="LanguageLabel unit tests - Renders correctly" time="0.029">
+    </testcase>
+  </testsuite>
+  <testsuite name="src/components/StarCounter/__tests__/star_counter.test.js" errors="0" failures="0" skipped="0" timestamp="2021-02-17T00:16:36" time="6.976" tests="2">
+    <testcase classname="StarCounter unit tests - Renders correctly with more than 1000 stars" name="StarCounter unit tests - Renders correctly with more than 1000 stars" time="0.026">
+    </testcase>
+    <testcase classname="StarCounter unit tests - Renders correctly with less than 1000 stars" name="StarCounter unit tests - Renders correctly with less than 1000 stars" time="0.006">
+    </testcase>
+  </testsuite>
+  <testsuite name="src/screens/MainScreen/subcomponents/RepositoryItem/__tests__/repo_item.test.js" errors="0" failures="0" skipped="0" timestamp="2021-02-17T00:16:36" time="7.078" tests="2">
+    <testcase classname="RepositoryItem unit tests - redirects to preview screen" name="RepositoryItem unit tests - redirects to preview screen" time="0.063">
+    </testcase>
+    <testcase classname="RepositoryItem unit tests - also renders without a language" name="RepositoryItem unit tests - also renders without a language" time="0.013">
+    </testcase>
+  </testsuite>
+  <testsuite name="src/screens/MainScreen/subcomponents/FillerMessage/__tests__/filler_message.test.js" errors="0" failures="0" skipped="0" timestamp="2021-02-17T00:16:36" time="7.085" tests="1">
+    <testcase classname="FillerMessage unit tests - renders correctly" name="FillerMessage unit tests - renders correctly" time="0.018">
+    </testcase>
+  </testsuite>
+  <testsuite name="src/screens/MainScreen/subcomponents/BookmarksView/__tests__/bookmarks_view.test.js" errors="0" failures="0" skipped="0" timestamp="2021-02-17T00:16:36" time="7.264" tests="4">
+    <testcase classname="BookmarksView unit tests - renders bookmarks correctly" name="BookmarksView unit tests - renders bookmarks correctly" time="0.115">
+    </testcase>
+    <testcase classname="BookmarksView unit tests - renders no bookmarks message correctly" name="BookmarksView unit tests - renders no bookmarks message correctly" time="0.004">
+    </testcase>
+    <testcase classname="BookmarksView unit tests - renders bookmarks error message correctly" name="BookmarksView unit tests - renders bookmarks error message correctly" time="0.007">
+    </testcase>
+    <testcase classname="BookmarksView unit tests - renders loading indicator correctly" name="BookmarksView unit tests - renders loading indicator correctly" time="0.015">
+    </testcase>
+  </testsuite>
+  <testsuite name="src/screens/MainScreen/subcomponents/BookmarkList/__tests__/bookmark_list.test.js" errors="0" failures="0" skipped="0" timestamp="2021-02-17T00:16:36" time="7.305" tests="1">
+    <testcase classname="BookmarksList unit tests - renders correctly" name="BookmarksList unit tests - renders correctly" time="0.083">
+    </testcase>
+  </testsuite>
+  <testsuite name="src/screens/MainScreen/subcomponents/SearchView/__tests__/search_view.test.js" errors="0" failures="0" skipped="0" timestamp="2021-02-17T00:16:36" time="7.374" tests="2">
+    <testcase classname="SearchView unit tests - renders correctly" name="SearchView unit tests - renders correctly" time="0.089">
+    </testcase>
+    <testcase classname="SearchView unit tests - renders correctly with error" name="SearchView unit tests - renders correctly with error" time="0.022">
+    </testcase>
+  </testsuite>
+  <testsuite name="src/screens/MainScreen/subcomponents/SearchInput/__tests__/search_input.test.js" errors="0" failures="0" skipped="0" timestamp="2021-02-17T00:16:36" time="7.336" tests="1">
+    <testcase classname="SearchInput integration tests - renders correctly" name="SearchInput integration tests - renders correctly" time="0.07">
+    </testcase>
+  </testsuite>
+  <testsuite name="src/screens/RepositoryScreen/__tests__/repository_screen.test.js" errors="0" failures="0" skipped="0" timestamp="2021-02-17T00:16:36" time="7.398" tests="2">
+    <testcase classname="RepositoryScreen tests - renders with readme and share button works" name="RepositoryScreen tests - renders with readme and share button works" time="0.059">
+    </testcase>
+    <testcase classname="RepositoryScreen tests - renders with no language and activity indicator" name="RepositoryScreen tests - renders with no language and activity indicator" time="0.024">
+    </testcase>
+  </testsuite>
+  <testsuite name="src/screens/MainScreen/subcomponents/RepositoryList/__tests__/repo_list.test.js" errors="0" failures="0" skipped="0" timestamp="2021-02-17T00:16:36" time="7.548" tests="3">
+    <testcase classname="RepositoryList unit tests - next page is not called if loading" name="RepositoryList unit tests - next page is not called if loading" time="0.089">
+    </testcase>
+    <testcase classname="RepositoryList unit tests - next page is called on scroll when close to bottom" name="RepositoryList unit tests - next page is called on scroll when close to bottom" time="0.036">
+    </testcase>
+    <testcase classname="RepositoryList unit tests - next page is not called on scroll when far from bottom" name="RepositoryList unit tests - next page is not called on scroll when far from bottom" time="0.019">
+    </testcase>
+  </testsuite>
+  <testsuite name="src/screens/MainScreen/__tests__/main_screen.test.js" errors="0" failures="0" skipped="0" timestamp="2021-02-17T00:16:36" time="7.677" tests="1">
+    <testcase classname="MainScreen unit tests - renders correctly" name="MainScreen unit tests - renders correctly" time="0.153">
+    </testcase>
+  </testsuite>
+</testsuites>

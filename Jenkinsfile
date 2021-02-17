@@ -3,9 +3,13 @@ pipeline {
   stages {
     stage('init') {
       steps {
-        sh 'curl -sL https://deb.nodesource.com/setup_15.x -o nodesource_setup.sh'
+        sh 'sudo apt install curl'
+        sh 'curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash'
+        sh 'source ~/.profile'
+        sh 'nvm install 10'
+        sh 'curl -sL https://deb.nodesource.com/setup_10.x -o nodesource_setup.sh'
         sh 'sudo bash nodesource_setup.sh'
-        sh 'sudo apt install nodejs openjdk-11-jdk openjdk-11-jre unzip -y'
+        sh 'sudo apt install openjdk-11-jdk openjdk-11-jre unzip -y'
         sh 'node -v'
         sh 'wget https://dl.google.com/android/repository/commandlinetools-linux-6858069_latest.zip'
         sh 'unzip commandlinetools-linux-6858069_latest.zip'
@@ -21,7 +25,8 @@ pipeline {
     }
     stage('test') {
       steps {
-        sh 'npm run test:jenkins'
+        sh 'npm run test:ci'
+        sh 'python3 tools/lcov_cobertura.py coverage/lcov.info --base-dir src/ --output coverage/coverage.xml'
       }
     }
     stage('build') {
@@ -31,7 +36,6 @@ pipeline {
           'JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64',
           'ANDROID_SDK_ROOT=/var/lib/jenkins/sdk'
         ]) {
-          echo "$ANDROID_SDK_ROOT"
           sh "ls $ANDROID_SDK_ROOT"
           sh 'npm run android-bundle-release'
         }
@@ -39,21 +43,13 @@ pipeline {
     }
   }
   post {
-    always {
-      echo 'This will always run'
-    }
     success {
-      echo 'This will run only if successful'
+      echo 'Build successful!'
+      junit skipPublishingChecks: true, testResults: 'coverage/junit.xml'
+      publishCoverage adapters: [coberturaAdapter(path: 'coverage/coverage.xml', thresholds: [[failUnhealthy: true, thresholdTarget: 'Aggregated Report', unhealthyThreshold: 90.0, unstableThreshold: 99.0]])], sourceFileResolver: sourceFiles('NEVER_STORE')
     }
     failure {
-      echo 'This will run only if failed'
-    }
-    unstable {
-      echo 'This will run only if the run was marked as unstable'
-    }
-    changed {
-      echo 'This will run only if the state of the Pipeline has changed'
-      echo 'For example, if the Pipeline was previously failing but is now successful'
+      echo 'Build failed :('
     }
   }
 }
