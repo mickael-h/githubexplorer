@@ -20,20 +20,23 @@ pipeline {
         sh 'npm i'
       }
     }
-    stage('test') {
+    stage('unit tests') {
       steps {
         sh 'npm run test:ci'
         sh 'python3 tools/lcov_cobertura.py coverage/lcov.info --base-dir src/ --output coverage/coverage.xml'
       }
     }
+    stage('e2e tests') {
+      when { changeRequest target: 'master' }
+    }
     stage('build') {
+      when { branch 'master' }
       steps {
         withEnv([
           'PATH+=/var/lib/jenkins/sdk/platform-tools',
           'JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64',
           'ANDROID_SDK_ROOT=/var/lib/jenkins/sdk'
         ]) {
-          sh "ls $ANDROID_SDK_ROOT"
           sh 'npm run android-bundle-release'
         }
       }
