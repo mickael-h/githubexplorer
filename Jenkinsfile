@@ -29,7 +29,7 @@ pipeline {
     stage('e2e tests') {
       when { changeRequest target: 'master' }
       steps {
-        echo 'Do e2e tests here. testes'
+        echo 'Do e2e tests here.'
       }
     }
     stage('build') {
